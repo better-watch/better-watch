@@ -650,7 +650,7 @@ export function TimeMachine({ events }: TimeMachineProps) {
           }}
         >
           {/* Timeline track */}
-          <div className="relative h-full w-36 cursor-pointer">
+          <div className="relative h-full w-44 cursor-pointer">
             {/* Severity-colored dots along the track */}
             {events.map((event, index) => {
               const eventTime = new Date(event.timestamp).getTime();
@@ -660,11 +660,11 @@ export function TimeMachine({ events }: TimeMachineProps) {
               return (
                 <div
                   key={`dot-${event.id}`}
-                  className="absolute right-[56px]"
+                  className="absolute right-[68px]"
                   style={{ top: `${eventPosition * 100}%`, transform: 'translateY(-50%)' }}
                 >
                   <div
-                    className="w-1.5 h-1.5 rounded-full"
+                    className="w-2.5 h-2.5 rounded-full"
                     style={{ backgroundColor: severityColor, opacity: index === activeIndex ? 1 : 0.5 }}
                   />
                 </div>
@@ -687,13 +687,13 @@ export function TimeMachine({ events }: TimeMachineProps) {
                 >
                   <motion.div
                     animate={{
-                      width: isActive ? 48 : 28,
-                      height: isActive ? 3 : 1,
+                      width: isActive ? 56 : 32,
+                      height: isActive ? 4 : 2,
                     }}
                     style={{
                       backgroundColor: severityColor,
                       opacity: isActive ? 1 : 0.4,
-                      borderRadius: 1,
+                      borderRadius: 2,
                       boxShadow: isActive ? `0 0 10px ${severityColor}` : 'none',
                     }}
                     transition={{ type: 'spring', stiffness: 500, damping: 30 }}
@@ -704,13 +704,13 @@ export function TimeMachine({ events }: TimeMachineProps) {
 
             {/* Floating active label — relative time + event type */}
             <motion.div
-              className="absolute right-[68px] pointer-events-none"
+              className="absolute right-[82px] pointer-events-none"
               animate={{ top: `${currentPosition * 100}%` }}
               transition={{ type: 'spring', stiffness: 800, damping: 35 }}
               style={{ transform: 'translateY(-50%)' }}
             >
               <span
-                className="text-xs whitespace-nowrap font-medium leading-none"
+                className="text-sm whitespace-nowrap font-medium leading-none"
                 style={{ color: SEVERITY_COLORS[currentEvent.severity] || '#f97316' }}
               >
                 {relativeTime(currentEvent.timestamp)}
