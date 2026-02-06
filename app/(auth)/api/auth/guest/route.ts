@@ -17,5 +17,5 @@ export async function GET(request: Request) {
     return NextResponse.redirect(new URL("/chat", request.url));
   }
 
-  return signIn("guest", { redirect: true, redirectTo: redirectUrl });
+  return signIn("guest", { redirectTo: redirectUrl });
 }
