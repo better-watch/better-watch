@@ -1211,3 +1211,20 @@ export const WarningIcon = ({ size = 16 }: { size?: number }) => {
     </svg>
   );
 };
+
+export const ClockIcon = ({ size = 16 }: { size?: number }) => (
+  <svg
+    height={size}
+    strokeLinejoin="round"
+    style={{ color: "currentcolor" }}
+    viewBox="0 0 16 16"
+    width={size}
+  >
+    <path
+      fillRule="evenodd"
+      clipRule="evenodd"
+      d="M8 14.5C11.5899 14.5 14.5 11.5899 14.5 8C14.5 4.41015 11.5899 1.5 8 1.5C4.41015 1.5 1.5 4.41015 1.5 8C1.5 11.5899 4.41015 14.5 8 14.5ZM8 16C12.4183 16 16 12.4183 16 8C16 3.58172 12.4183 0 8 0C3.58172 0 0 3.58172 0 8C0 12.4183 3.58172 16 8 16ZM8.75 4V7.68934L11.0303 9.96967L11.5607 10.5L10.5 11.5607L9.96967 11.0303L7.46967 8.53033C7.32902 8.38968 7.25 8.19891 7.25 8V4H8.75Z"
+      fill="currentColor"
+    />
+  </svg>
+);

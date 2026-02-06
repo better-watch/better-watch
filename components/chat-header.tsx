@@ -1,11 +1,12 @@
 "use client";
 
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { memo } from "react";
 import { useWindowSize } from "usehooks-ts";
 import { SidebarToggle } from "@/components/sidebar-toggle";
 import { Button } from "@/components/ui/button";
-import { PlusIcon } from "./icons";
+import { ClockIcon, PlusIcon } from "./icons";
 import { useSidebar } from "./ui/sidebar";
 
 function PureChatHeader({
@@ -37,6 +38,17 @@ function PureChatHeader({
           <span className="md:sr-only">New Chat</span>
         </Button>
       )}
+
+      <Button
+        asChild
+        className="order-3 h-8 px-2 md:ml-auto md:h-fit md:px-2"
+        variant="outline"
+      >
+        <Link href="/events">
+          <ClockIcon size={16} />
+          <span className="md:sr-only">Audit Log</span>
+        </Link>
+      </Button>
 
     </header>
   );

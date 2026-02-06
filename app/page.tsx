@@ -1,10 +1,5 @@
-import { TimeMachine } from './components/time-machine';
-import { mockSREEvents } from '@/lib/sre-events';
+import { redirect } from 'next/navigation';
 
 export default function Home() {
-  return (
-    <div className="relative min-h-screen">
-      <TimeMachine events={mockSREEvents} />
-    </div>
-  );
+  redirect('/chat');
 }
