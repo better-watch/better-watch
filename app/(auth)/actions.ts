@@ -79,6 +79,7 @@ export const register = async (
       return { status: "invalid_data" };
     }
 
+    console.error("Registration failed:", error);
     return { status: "failed" };
   }
 };
