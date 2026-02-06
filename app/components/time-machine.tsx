@@ -727,11 +727,6 @@ export function TimeMachine({ events }: TimeMachineProps) {
         </div>
       </motion.div>
 
-      {/* Keyboard hint */}
-      <div className="absolute bottom-8 left-8 text-xs text-neutral-400 hidden md:block">
-        Scroll or drag timeline
-      </div>
-
       {/* Detail expansion panel */}
       <AnimatePresence>
         {detailOpen && (
