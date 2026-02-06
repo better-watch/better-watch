@@ -480,7 +480,7 @@ export function TimeMachine({ events }: TimeMachineProps) {
   // Scroll with tension/snap
   useEffect(() => {
     const container = containerRef.current;
-    if (!container) return;
+    if (!container || detailOpen) return;
 
     const handleWheel = (e: WheelEvent) => {
       e.preventDefault();
@@ -519,7 +519,7 @@ export function TimeMachine({ events }: TimeMachineProps) {
       container.removeEventListener('wheel', handleWheelWithDebounce);
       clearTimeout(wheelTimeout);
     };
-  }, [events.length, activeIndex]);
+  }, [events.length, activeIndex, detailOpen]);
 
   if (events.length === 0) {
     return (
