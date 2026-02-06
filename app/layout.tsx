@@ -15,8 +15,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "summersmuir",
-  description: "Personal website and blog",
+  title: "AI SRE Agent — Audit Log",
+  description: "Real-time audit log of AI SRE agent actions, deployments, and infrastructure events",
 };
 
 export default function RootLayout({
