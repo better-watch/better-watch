@@ -126,13 +126,13 @@ function EventCard({ event }: { event: SREEvent }) {
 
   return (
     <article
-      className="h-full overflow-hidden rounded-lg"
+      className="h-full overflow-hidden rounded-2xl border border-neutral-200/60 dark:border-neutral-700/40"
       style={{
         borderTop: `3px solid ${severityColor}`,
         background: `linear-gradient(to bottom, ${severityColor}08 0%, transparent 30%), var(--card-bg, white)`,
         boxShadow: isCritical
-          ? `0 25px 50px -12px rgba(0,0,0,0.25), 0 0 20px ${severityColor}15`
-          : '0 25px 50px -12px rgba(0,0,0,0.25)',
+          ? `0 20px 40px -8px rgba(0,0,0,0.2), 0 0 24px ${severityColor}12`
+          : '0 8px 32px -4px rgba(0,0,0,0.12), 0 2px 8px -2px rgba(0,0,0,0.08)',
       }}
     >
       {/* Artifact section — top 60% */}
@@ -559,17 +559,18 @@ export function TimeMachine({ events }: TimeMachineProps) {
         transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
       >
         {/* Cards stack */}
-        <div className="relative w-full max-w-3xl h-[500px]" style={{ transformStyle: 'preserve-3d' }}>
+        <div className="relative w-full max-w-2xl h-[400px]" style={{ transformStyle: 'preserve-3d' }}>
           {events.map((event, index) => {
             const isActive = index === activeIndex;
             const offset = index - activeIndex;
             const absOffset = Math.abs(offset);
 
-            let translateY = offset * 45;
-            let translateZ = -absOffset * 60;
+            let translateY = offset * 58;
+            let translateZ = -absOffset * 50;
             let rotateX = 0;
-            const opacity = Math.max(0.4, 1 - absOffset * 0.08);
-            const scale = Math.max(0.7, 1 - absOffset * 0.035);
+            const opacity = isActive ? 1 : Math.max(0.3, 1 - absOffset * 0.15);
+            const scale = isActive ? 1 : Math.max(0.82, 1 - absOffset * 0.04);
+            const blur = isActive ? 0 : Math.min(absOffset * 1.5, 4);
 
             if (isActive && Math.abs(dragProgress) > 0.05) {
               translateY = translateY - dragProgress * 100;
@@ -593,6 +594,7 @@ export function TimeMachine({ events }: TimeMachineProps) {
                   rotateX,
                   scale,
                   opacity,
+                  filter: `blur(${blur}px)`,
                 }}
                 transition={{
                   type: 'spring',
