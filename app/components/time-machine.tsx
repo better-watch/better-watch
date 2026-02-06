@@ -622,7 +622,7 @@ export function TimeMachine({ events }: TimeMachineProps) {
         className="contents"
       >
         <div
-          className="absolute right-4 top-1/2 -translate-y-1/2 h-[70%] flex flex-col items-end select-none"
+          className="absolute right-6 top-1/2 -translate-y-1/2 h-[85%] flex flex-col items-end select-none"
           onMouseDown={(e) => {
             const rect = e.currentTarget.getBoundingClientRect();
             const handleDrag = (moveEvent: MouseEvent) => {
@@ -650,7 +650,7 @@ export function TimeMachine({ events }: TimeMachineProps) {
           }}
         >
           {/* Timeline track */}
-          <div className="relative h-full w-24 cursor-pointer">
+          <div className="relative h-full w-36 cursor-pointer">
             {/* Severity-colored dots along the track */}
             {events.map((event, index) => {
               const eventTime = new Date(event.timestamp).getTime();
@@ -660,12 +660,12 @@ export function TimeMachine({ events }: TimeMachineProps) {
               return (
                 <div
                   key={`dot-${event.id}`}
-                  className="absolute right-[46px]"
+                  className="absolute right-[56px]"
                   style={{ top: `${eventPosition * 100}%`, transform: 'translateY(-50%)' }}
                 >
                   <div
-                    className="w-1 h-1 rounded-full"
-                    style={{ backgroundColor: severityColor, opacity: index === activeIndex ? 1 : 0.6 }}
+                    className="w-1.5 h-1.5 rounded-full"
+                    style={{ backgroundColor: severityColor, opacity: index === activeIndex ? 1 : 0.5 }}
                   />
                 </div>
               );
@@ -687,13 +687,14 @@ export function TimeMachine({ events }: TimeMachineProps) {
                 >
                   <motion.div
                     animate={{
-                      width: isActive ? 40 : 20,
-                      height: isActive ? 2 : 1,
+                      width: isActive ? 48 : 28,
+                      height: isActive ? 3 : 1,
                     }}
                     style={{
                       backgroundColor: severityColor,
-                      opacity: isActive ? 1 : 0.5,
-                      boxShadow: isActive ? `0 0 8px ${severityColor}` : 'none',
+                      opacity: isActive ? 1 : 0.4,
+                      borderRadius: 1,
+                      boxShadow: isActive ? `0 0 10px ${severityColor}` : 'none',
                     }}
                     transition={{ type: 'spring', stiffness: 500, damping: 30 }}
                   />
@@ -703,13 +704,13 @@ export function TimeMachine({ events }: TimeMachineProps) {
 
             {/* Floating active label — relative time + event type */}
             <motion.div
-              className="absolute right-12 pointer-events-none"
+              className="absolute right-[68px] pointer-events-none"
               animate={{ top: `${currentPosition * 100}%` }}
               transition={{ type: 'spring', stiffness: 800, damping: 35 }}
               style={{ transform: 'translateY(-50%)' }}
             >
               <span
-                className="text-xs whitespace-nowrap font-medium"
+                className="text-xs whitespace-nowrap font-medium leading-none"
                 style={{ color: SEVERITY_COLORS[currentEvent.severity] || '#f97316' }}
               >
                 {relativeTime(currentEvent.timestamp)}
@@ -720,10 +721,10 @@ export function TimeMachine({ events }: TimeMachineProps) {
           </div>
 
           {/* Labels */}
-          <div className="absolute -top-5 right-0 text-[10px] text-neutral-400">
+          <div className="absolute -top-6 right-0 text-[11px] text-neutral-400">
             {new Date(oldestTime).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
           </div>
-          <div className="absolute -bottom-5 right-0 text-[10px] text-blue-500 font-medium">
+          <div className="absolute -bottom-6 right-0 text-[11px] text-blue-500 font-medium">
             Now
           </div>
         </div>
