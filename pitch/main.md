@@ -5,7 +5,7 @@
 
 ---
 
-Hey everyone, I'm [name]. I built Better Brain.
+Hey everyone,
 
 Have you ever been asked "hey, is this customer experiencing
 issues?" or "how are users actually using this feature?" [pause]
@@ -17,9 +17,6 @@ So you do what every engineer does. You add more logging, you
 redeploy, you wait, and you hope the problem happens again. [pause]
 
 This is broken.
-
-Observability today forces you to predict what data you'll need
-before you need it. And you're almost always wrong.
 
 [pause]
 
