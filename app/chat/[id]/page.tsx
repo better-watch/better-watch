@@ -58,7 +58,7 @@ async function ChatPage({ params }: { params: Promise<{ id: string }> }) {
           id={chat.id}
           initialChatModel={DEFAULT_CHAT_MODEL}
           initialMessages={uiMessages}
-          initialVisibilityType={chat.visibility}
+
           isReadonly={session?.user?.id !== chat.userId}
         />
         <DataStreamHandler />
@@ -73,7 +73,6 @@ async function ChatPage({ params }: { params: Promise<{ id: string }> }) {
         id={chat.id}
         initialChatModel={chatModelFromCookie.value}
         initialMessages={uiMessages}
-        initialVisibilityType={chat.visibility}
         isReadonly={session?.user?.id !== chat.userId}
       />
       <DataStreamHandler />
