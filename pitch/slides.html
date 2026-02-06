@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Better Brain</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.css" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/theme/black.css" />
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap');
+
+  :root {
+    --r-background-color: #09090b;
+    --r-main-font: 'Inter', sans-serif;
+    --r-heading-font: 'Inter', sans-serif;
+    --r-main-color: #fafafa;
+    --r-heading-color: #fafafa;
+    --r-link-color: #a78bfa;
+    --accent: #a78bfa;
+    --accent-dim: #7c3aed;
+    --muted: #a1a1aa;
+  }
+
+  .reveal { font-weight: 300; }
+  .reveal h1, .reveal h2, .reveal h3 {
+    font-weight: 700;
+    text-transform: none;
+    letter-spacing: -0.02em;
+    line-height: 1.15;
+  }
+  .reveal h1 { font-size: 3.2em; }
+  .reveal h2 { font-size: 2em; }
+  .reveal h3 { font-size: 1.3em; color: var(--muted); font-weight: 400; }
+  .reveal p { line-height: 1.6; }
+
+  .accent { color: var(--accent); }
+  .muted { color: var(--muted); }
+  .dim { opacity: 0.5; }
+  .big { font-size: 1.4em; }
+  .bold { font-weight: 700; }
+
+  .reveal .strike { text-decoration: line-through; opacity: 0.4; }
+
+  /* Slack messages */
+  .slack-wall {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    max-width: 700px;
+    margin: 0 auto;
+  }
+  .slack-msg {
+    background: #1a1d21;
+    border-radius: 12px;
+    padding: 18px 22px;
+    text-align: left;
+    border-left: 3px solid var(--accent-dim);
+    font-size: 0.72em;
+    line-height: 1.5;
+  }
+  .slack-msg .slack-user {
+    font-weight: 700;
+    color: var(--accent);
+    margin-bottom: 4px;
+    font-size: 0.9em;
+  }
+  .slack-msg .slack-text { color: #d1d5db; }
+  .slack-msg .slack-time { color: #6b7280; font-size: 0.8em; margin-left: 8px; font-weight: 400; }
+
+  /* Architecture */
+  .arch-diagram {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0;
+    flex-wrap: nowrap;
+    margin: 30px auto 0;
+  }
+  .arch-box {
+    background: #18181b;
+    border: 1px solid #27272a;
+    border-radius: 14px;
+    padding: 28px 26px;
+    min-width: 170px;
+    text-align: center;
+  }
+  .arch-box.agent {
+    border-color: var(--accent);
+    background: linear-gradient(135deg, #1e1033 0%, #18181b 100%);
+    box-shadow: 0 0 40px rgba(167, 139, 250, 0.12);
+  }
+  .arch-box .arch-label {
+    font-size: 0.55em;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 8px;
+  }
+  .arch-box .arch-name {
+    font-size: 0.85em;
+    font-weight: 600;
+    color: #fafafa;
+  }
+  .arch-arrow {
+    font-size: 1.6em;
+    color: var(--accent-dim);
+    padding: 0 10px;
+    flex-shrink: 0;
+  }
+  .arch-sub {
+    font-size: 0.48em;
+    color: var(--muted);
+    margin-top: 6px;
+  }
+  .arch-exports {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .arch-exports .arch-box {
+    min-width: 140px;
+    padding: 16px 20px;
+  }
+
+  /* Feature list */
+  .feature-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    text-align: left;
+    max-width: 750px;
+    margin: 0 auto;
+  }
+  .feature-list li {
+    padding: 14px 0;
+    border-bottom: 1px solid #27272a;
+    font-size: 0.85em;
+    display: flex;
+    gap: 16px;
+    align-items: baseline;
+  }
+  .feature-list li:last-child { border-bottom: none; }
+  .feature-list .feat-icon { color: var(--accent); font-size: 1.1em; flex-shrink: 0; }
+
+  /* Closing */
+  .tagline {
+    font-size: 1.6em;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    margin-top: 40px;
+  }
+
+  .reveal .slide-number { font-family: 'Inter', sans-serif; font-size: 14px; }
+</style>
+</head>
+<body>
+<div class="reveal">
+<div class="slides">
+
+  <!-- 1 ─ TITLE -->
+  <section>
+    <h1>Better Brain</h1>
+    <h3>stop writing logs. start getting answers.</h3>
+  </section>
+
+  <!-- 2 ─ THE FAMILIAR PAIN (slack messages) -->
+  <section>
+    <div class="slack-wall">
+      <div class="slack-msg">
+        <div class="slack-user">Sarah (PM) <span class="slack-time">2:47 PM</span></div>
+        <div class="slack-text">hey, are customers actually hitting the new checkout flow? need numbers for the board meeting tomorrow</div>
+      </div>
+      <div class="slack-msg">
+        <div class="slack-user">Mike (Support) <span class="slack-time">3:12 PM</span></div>
+        <div class="slack-text">got a ticket from Acme Corp -- user says they're seeing stale data on the dashboard. can someone check what's going on?</div>
+      </div>
+      <div class="slack-msg">
+        <div class="slack-user">Jordan (SRE) <span class="slack-time">4:03 PM</span></div>
+        <div class="slack-text">how often is the retry logic actually firing in prod? seeing some weird latency spikes</div>
+      </div>
+      <div class="slack-msg">
+        <div class="slack-user">You <span class="slack-time">4:15 PM</span></div>
+        <div class="slack-text">let me check... 🔍</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3 ─ THE LOOP -->
+  <section>
+    <h2>The Loop</h2>
+    <p class="big" style="margin-top: 40px;">
+      check logs → <span class="muted">nothing useful</span><br/>
+      add more logging → redeploy → wait<br/>
+      <span class="muted">hope it happens again</span>
+    </p>
+  </section>
+
+  <!-- 4 ─ THE PROBLEM -->
+  <section>
+    <p class="muted" style="margin-bottom: 12px;">the problem</p>
+    <h2>Observability is <span class="accent">write-first</span></h2>
+    <p style="margin-top: 30px;">
+      You have to predict what data you'll need<br/>
+      <span class="bold">before</span> you need it.
+    </p>
+  </section>
+
+  <!-- 5 ─ INTRODUCING -->
+  <section>
+    <p class="muted" style="margin-bottom: 12px;">introducing</p>
+    <h1>Better Brain</h1>
+    <p style="margin-top: 30px; font-size: 1.1em;">
+      An agent that continuously learns your application<br/>
+      and always has the data to answer your questions.
+    </p>
+  </section>
+
+  <!-- 6 ─ DYNAMIC INSTRUMENTATION -->
+  <section>
+    <p class="muted" style="margin-bottom: 12px;">the how</p>
+    <h2>Dynamic Instrumentation</h2>
+    <ul class="feature-list" style="margin-top: 36px;">
+      <li><span class="feat-icon">→</span> Attaches probes to live, running code</li>
+      <li><span class="feat-icon">→</span> Captures variable values &amp; execution paths</li>
+      <li><span class="feat-icon">→</span> Near-zero performance overhead</li>
+      <li><span class="feat-icon">→</span> No code changes. No redeploys.</li>
+    </ul>
+  </section>
+
+  <!-- 7 ─ ARCHITECTURE -->
+  <section>
+    <p class="muted" style="margin-bottom: 20px;">architecture</p>
+    <div class="arch-diagram">
+      <div class="arch-box">
+        <div class="arch-label">your app</div>
+        <div class="arch-name">Services</div>
+        <div class="arch-sub">any cloud / runtime</div>
+      </div>
+      <div class="arch-arrow">⇄</div>
+      <div class="arch-box agent">
+        <div class="arch-label">agent</div>
+        <div class="arch-name">Better Brain</div>
+        <div class="arch-sub">dynamic instrumentation<br/>learns &amp; adapts</div>
+      </div>
+      <div class="arch-arrow">→</div>
+      <div class="arch-exports">
+        <div class="arch-box">
+          <div class="arch-label">export</div>
+          <div class="arch-name">Sentry</div>
+        </div>
+        <div class="arch-box">
+          <div class="arch-label">export</div>
+          <div class="arch-name">Any destination</div>
+        </div>
+      </div>
+    </div>
+    <div style="margin-top: 36px;">
+      <div class="arch-diagram">
+        <div class="arch-box" style="border-color: #3f3f46;">
+          <div class="arch-label">interface</div>
+          <div class="arch-name">MCP</div>
+          <div class="arch-sub">IDE / chat / terminal</div>
+        </div>
+        <div class="arch-arrow">⇄</div>
+        <div class="arch-box agent" style="opacity: 0.7;">
+          <div class="arch-name">Better Brain</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 8 ─ THE KEY INSIGHT -->
+  <section>
+    <p class="muted" style="margin-bottom: 12px;">the key insight</p>
+    <h2>The agent decides<br/><span class="accent">what to observe</span></h2>
+    <p style="margin-top: 30px;">
+      It learns your application, identifies blind spots,<br/>
+      and adjusts instrumentation automatically.
+    </p>
+    <p class="muted" style="margin-top: 20px;">It gets smarter over time.</p>
+  </section>
+
+  <!-- 9 ─ BEFORE / AFTER -->
+  <section>
+    <div style="display: flex; justify-content: center; gap: 80px; margin-top: 20px;">
+      <div style="text-align: left;">
+        <p class="muted" style="margin-bottom: 16px;">before</p>
+        <p class="strike" style="font-size: 0.9em;">Write log lines</p>
+        <p class="strike" style="font-size: 0.9em;">Configure traces</p>
+        <p class="strike" style="font-size: 0.9em;">Redeploy &amp; wait</p>
+        <p class="strike" style="font-size: 0.9em;">Hope it happens again</p>
+      </div>
+      <div style="text-align: left;">
+        <p class="accent" style="margin-bottom: 16px; font-weight: 600;">after</p>
+        <p style="font-size: 0.9em; font-weight: 600;">Just ask.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 10 ─ DEMO TRANSITION -->
+  <section>
+    <h2>Let me show you.</h2>
+  </section>
+
+  <!-- 11 ─ CLOSING (after demo) -->
+  <section>
+    <h1>Better Brain</h1>
+    <p class="tagline">
+      Stop writing logs.<br/>
+      <span class="accent">Start getting answers.</span>
+    </p>
+  </section>
+
+</div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.js"></script>
+<script>
+  Reveal.initialize({
+    hash: true,
+    controls: false,
+    progress: true,
+    center: true,
+    transition: 'fade',
+    transitionSpeed: 'fast',
+    backgroundTransition: 'fade',
+    slideNumber: false,
+    width: 1280,
+    height: 720,
+  });
+</script>
+</body>
+</html>
