@@ -23,6 +23,12 @@ export function Header() {
           </div>
         </div>
         <div className="flex items-center gap-6">
+          <Link
+            href="/chat"
+            className="text-sm font-medium text-subtitle hover:text-heading transition-colors"
+          >
+            Chat
+          </Link>
           <ThemeToggle />
         </div>
       </nav>
