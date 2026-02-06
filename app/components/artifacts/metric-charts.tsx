@@ -1,5 +1,6 @@
 "use client";
 
+import { useId } from "react";
 import type { SparklineData, AreaChartData, BarChartData } from "@/lib/sre-events";
 
 // ── Helpers ──────────────────────────────────────────────────────────────────
@@ -65,7 +66,7 @@ export function SparklineChart({ data }: { data: SparklineData }) {
     anomalyX2 = points[anomalyRange[1]].x;
   }
 
-  const id = `spark-${Math.random().toString(36).slice(2, 8)}`;
+  const id = `spark${useId().replace(/:/g, '')}`;
 
   return (
     <svg
@@ -201,7 +202,7 @@ export function AreaChart({ data }: { data: AreaChartData }) {
     };
   });
 
-  const id = `area-${Math.random().toString(36).slice(2, 8)}`;
+  const id = `area${useId().replace(/:/g, '')}`;
 
   return (
     <svg
@@ -355,7 +356,7 @@ export function BarChart({ data }: { data: BarChartData }) {
   const totalBarsH = barHeight * bars.length + BAR_GAP * (bars.length - 1);
   const offsetY = BAR_PAD.top + (plotH - totalBarsH) / 2;
 
-  const id = `bar-${Math.random().toString(36).slice(2, 8)}`;
+  const id = `bar${useId().replace(/:/g, '')}`;
 
   return (
     <svg
