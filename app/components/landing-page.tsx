@@ -43,7 +43,7 @@ function HeroSection() {
         <p className="mx-auto mt-8 max-w-2xl text-lg text-subtitle">
           An intelligent observability and analytics agent that automatically
           detects, diagnoses, and patches production issues at runtime. No
-          waiting for the next deploy.
+          waiting for PR approval or the next deploy.
         </p>
         <div className="mt-12 flex flex-col items-center justify-center gap-4 sm:flex-row">
           <Button asChild size="lg" className="w-full sm:w-auto">
