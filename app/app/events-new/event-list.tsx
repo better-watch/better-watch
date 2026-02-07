@@ -31,7 +31,7 @@ const STATUS_CONFIG: Record<IssueStatus, { label: string; color: string; bg: str
   pending: { label: "Awaiting Approval", color: "text-amber-600 dark:text-amber-400", bg: "bg-amber-50 dark:bg-amber-950/30", icon: Clock },
   approved: { label: "Approved", color: "text-blue-600 dark:text-blue-400", bg: "bg-blue-50 dark:bg-blue-950/30", icon: ShieldCheck },
   applying: { label: "Applying Fix…", color: "text-blue-600 dark:text-blue-400", bg: "bg-blue-50 dark:bg-blue-950/30", icon: Loader2 },
-  resolved: { label: "Resolved", color: "text-emerald-600 dark:text-emerald-400", bg: "bg-emerald-50 dark:bg-emerald-950/30", icon: CheckCircle },
+  resolved: { label: "Applied", color: "text-emerald-600 dark:text-emerald-400", bg: "bg-emerald-50 dark:bg-emerald-950/30", icon: CheckCircle },
   rejected: { label: "Rejected", color: "text-neutral-500 dark:text-neutral-400", bg: "bg-neutral-50 dark:bg-neutral-800/30", icon: XCircle },
 };
 
@@ -351,28 +351,11 @@ function DetailModal({ event, status, onClose, onApprove, onReject }: DetailModa
       <motion.div
         ref={panelRef}
         className="relative w-full max-w-3xl max-h-[85vh] overflow-y-auto rounded-xl bg-white dark:bg-neutral-900 shadow-2xl"
-        style={{ borderTop: `3px solid ${severityColor}` }}
         initial={{ y: 40, opacity: 0, scale: 0.97 }}
         animate={{ y: 0, opacity: 1, scale: 1 }}
         exit={{ y: 40, opacity: 0, scale: 0.97 }}
         transition={{ type: "spring", stiffness: 400, damping: 30 }}
       >
-        {/* Close button */}
-        <button
-          onClick={onClose}
-          className="absolute top-3 right-3 z-10 w-8 h-8 flex items-center justify-center rounded-full bg-neutral-100 dark:bg-neutral-800 text-neutral-500 dark:text-neutral-400 hover:bg-neutral-200 dark:hover:bg-neutral-700 transition-colors"
-          aria-label="Close"
-        >
-          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
-            <path d="M1 1l12 12M13 1L1 13" />
-          </svg>
-        </button>
-
-        {/* Artifact */}
-        <div className={`p-6 min-h-[240px] flex items-center justify-center ${SEVERITY_BG[event.severity] ?? ""}`}>
-          <ArtifactRenderer event={event} />
-        </div>
-
         {/* Content */}
         <div className="p-6 space-y-5">
           {/* Badges row */}
@@ -491,7 +474,7 @@ function DetailModal({ event, status, onClose, onApprove, onReject }: DetailModa
           {status === "resolved" && (
             <div className="flex items-center gap-2 pt-1 text-sm text-emerald-600 dark:text-emerald-400">
               <CheckCircle size={16} />
-              This issue has been resolved.
+              Fix has been applied.
             </div>
           )}
 
