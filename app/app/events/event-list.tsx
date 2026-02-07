@@ -17,6 +17,7 @@ import {
   XCircle,
   GitBranch,
   Loader2,
+  Eye,
 } from "lucide-react";
 import type { SREEvent } from "@/lib/sre-events";
 import {
@@ -157,45 +158,53 @@ function EventRow({ event, index, status, onSelect }: EventRowProps) {
       initial={{ opacity: 0, y: 12 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.3, delay: index * 0.03 }}
+      className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-colors hover:bg-neutral-50 dark:hover:bg-neutral-800/50 ${isActionable ? "bg-amber-50/40 dark:bg-amber-950/10" : ""}`}
     >
       <button
         onClick={onSelect}
-        className="group w-full text-left"
+        className="group flex flex-1 items-center gap-3 min-w-0 text-left"
       >
-        <div className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-colors hover:bg-neutral-50 dark:hover:bg-neutral-800/50 ${isActionable ? "bg-amber-50/40 dark:bg-amber-950/10" : ""}`}>
-          {/* Severity dot */}
-          <span
-            className="w-2 h-2 rounded-full shrink-0"
-            style={{ backgroundColor: severityColor }}
-          />
+        {/* Severity dot */}
+        <span
+          className="w-2 h-2 rounded-full shrink-0"
+          style={{ backgroundColor: severityColor }}
+        />
 
-          {/* Icon */}
-          <Icon
-            size={16}
-            className="shrink-0 text-neutral-400 dark:text-neutral-500"
-          />
+        {/* Icon */}
+        <Icon
+          size={16}
+          className="shrink-0 text-neutral-400 dark:text-neutral-500"
+        />
 
-          {/* Title */}
-          <span className="flex-1 text-sm font-medium text-neutral-900 dark:text-neutral-100 truncate">
-            {event.title}
-          </span>
+        {/* Title */}
+        <span className="flex-1 text-sm font-medium text-neutral-900 dark:text-neutral-100 truncate">
+          {event.title}
+        </span>
 
-          {/* Status badge */}
-          <span className="hidden sm:inline-flex shrink-0">
-            <StatusBadge status={status} />
-          </span>
+        {/* Status badge */}
+        <span className="hidden sm:inline-flex shrink-0">
+          <StatusBadge status={status} />
+        </span>
 
-          {/* Service */}
-          <span className="hidden md:inline-block shrink-0 px-2 py-0.5 rounded bg-neutral-100 dark:bg-neutral-800 text-xs font-mono text-neutral-500 dark:text-neutral-400">
-            {event.service}
-          </span>
+        {/* Service */}
+        <span className="hidden md:inline-block shrink-0 px-2 py-0.5 rounded bg-neutral-100 dark:bg-neutral-800 text-xs font-mono text-neutral-500 dark:text-neutral-400">
+          {event.service}
+        </span>
 
-          {/* Time */}
-          <span className="shrink-0 w-16 text-right text-xs text-neutral-400 dark:text-neutral-500">
-            {relativeTime(event.timestamp)}
-          </span>
-        </div>
+        {/* Time */}
+        <span className="shrink-0 w-16 text-right text-xs text-neutral-400 dark:text-neutral-500">
+          {relativeTime(event.timestamp)}
+        </span>
       </button>
+
+      {/* Action: view */}
+      <Link
+        href={`/events/${event.id}`}
+        className="shrink-0 p-1.5 rounded-md text-neutral-500 hover:text-neutral-900 hover:bg-neutral-200 dark:text-neutral-400 dark:hover:text-neutral-100 dark:hover:bg-neutral-700 transition-colors"
+        title="View details"
+      >
+        <Eye size={16} />
+      </Link>
     </motion.div>
   );
 }
@@ -453,6 +462,7 @@ export function EventList({ events }: EventListProps) {
           <span className="hidden sm:inline-block shrink-0 w-32 text-center">Status</span>
           <span className="hidden md:inline-block shrink-0 w-28 text-center">Service</span>
           <span className="shrink-0 w-16 text-right">When</span>
+          <span className="shrink-0 w-10 text-center">Action</span>
         </div>
 
         <div className="border-t border-neutral-100 dark:border-neutral-800" />
