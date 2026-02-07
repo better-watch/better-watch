@@ -368,11 +368,6 @@ function DetailModal({ event, status, onClose, onApprove, onReject }: DetailModa
           </svg>
         </button>
 
-        {/* Artifact */}
-        <div className={`p-6 min-h-[240px] flex items-center justify-center ${SEVERITY_BG[event.severity] ?? ""}`}>
-          <ArtifactRenderer event={event} />
-        </div>
-
         {/* Content */}
         <div className="p-6 space-y-5">
           {/* Badges row */}
