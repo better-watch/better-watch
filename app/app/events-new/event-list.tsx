@@ -31,7 +31,7 @@ const STATUS_CONFIG: Record<IssueStatus, { label: string; color: string; bg: str
   pending: { label: "Awaiting Approval", color: "text-amber-600 dark:text-amber-400", bg: "bg-amber-50 dark:bg-amber-950/30", icon: Clock },
   approved: { label: "Approved", color: "text-blue-600 dark:text-blue-400", bg: "bg-blue-50 dark:bg-blue-950/30", icon: ShieldCheck },
   applying: { label: "Applying Fix…", color: "text-blue-600 dark:text-blue-400", bg: "bg-blue-50 dark:bg-blue-950/30", icon: Loader2 },
-  resolved: { label: "Resolved", color: "text-emerald-600 dark:text-emerald-400", bg: "bg-emerald-50 dark:bg-emerald-950/30", icon: CheckCircle },
+  resolved: { label: "Applied", color: "text-emerald-600 dark:text-emerald-400", bg: "bg-emerald-50 dark:bg-emerald-950/30", icon: CheckCircle },
   rejected: { label: "Rejected", color: "text-neutral-500 dark:text-neutral-400", bg: "bg-neutral-50 dark:bg-neutral-800/30", icon: XCircle },
 };
 
@@ -474,7 +474,7 @@ function DetailModal({ event, status, onClose, onApprove, onReject }: DetailModa
           {status === "resolved" && (
             <div className="flex items-center gap-2 pt-1 text-sm text-emerald-600 dark:text-emerald-400">
               <CheckCircle size={16} />
-              This issue has been resolved.
+              Fix has been applied.
             </div>
           )}
 
