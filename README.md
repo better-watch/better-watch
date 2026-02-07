@@ -1,12 +1,18 @@
-# Time Machine
+# Better Watch
 
-A monorepo containing the Time Machine application and related packages.
+Better Watch is an intelligent observability and analytics agent that automatically detects, diagnoses, and patches production issues in real-time and runtime. By combining continuous monitoring with AI-powered code analysis and runtime patching capabilities, Better Watch dramatically reduces mean time to resolution (MTTR) while maintaining safety through human oversight.
+
+
+# How it works
+
+Better Watch automatically detects bugs, generates patches, and deploys them as toggleable fixes that can be enabled/disabled in real-time, similar to how feature flags work. Once a patch is live and validated, Better Watch creates a PR with the permanent fix. When the PR is merged, the runtime patch is automatically decommissioned, completing the bug-fix lifecycle.
+
 
 ## Structure
 
 ```
 ├── agent/      # Backend agent service
-├── sdk/        # Time Machine SDK
+├── sdk/        # Better Watch SDK
 └── app/        # Next.js web application
 ```
 
