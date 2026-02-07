@@ -134,9 +134,9 @@ export const mockSREEvents: SREEvent[] = [
   // ─── 0 h ago ───────────────────────────────────────────────────────────────
   {
     id: "evt-001",
-    title: "API Gateway 5xx Spike",
+    title: "DDoS Pattern Detected — API Gateway",
     summary:
-      "Error rate on api-gateway jumped to 34% over the last 10 minutes, triggering a P1 incident.",
+      "Abnormal traffic spike from IP range 198.51.100.0/24 targeting /api/checkout. Request rate surged from 200 req/s to 12,400 req/s in under 2 minutes, degrading service for legitimate users.",
     timestamp: hoursAgo(0.5),
     eventType: EventType.IncidentDetected,
     severity: Severity.Critical,
@@ -144,10 +144,10 @@ export const mockSREEvents: SREEvent[] = [
     artifactType: ArtifactType.Sparkline,
     artifactData: {
       dataPoints: [
-        1, 1, 2, 1, 1, 2, 3, 2, 1, 8, 18, 27, 34, 31, 29, 33, 35, 34, 30,
-        28,
+        200, 210, 195, 205, 220, 380, 1200, 3400, 6800, 9200, 11500, 12400,
+        12100, 12350, 12200, 12400, 12300, 12100, 12250, 12400,
       ],
-      anomalyRange: [9, 19],
+      anomalyRange: [5, 19],
     },
   },
   // ─── 1 h ago ───────────────────────────────────────────────────────────────
