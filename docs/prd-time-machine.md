@@ -1,10 +1,10 @@
-# PRD: Apple Time Machine Blog Timeline
+# PRD: Apple Better Watch Blog Timeline
 
 ## Overview
-Build a Next.js application replicating the "Apple Time Machine"-inspired timeline view for displaying blog posts. The UI features a 3D stacked card layout where each card represents a blog post, with the most recent post in the foreground and older posts receding into the background with perspective, scaling, opacity, and blur effects. A vertical draggable timeline on the right side controls navigation. Supports light and dark modes.
+Build a Next.js application replicating the "Apple Better Watch"-inspired timeline view for displaying blog posts. The UI features a 3D stacked card layout where each card represents a blog post, with the most recent post in the foreground and older posts receding into the background with perspective, scaling, opacity, and blur effects. A vertical draggable timeline on the right side controls navigation. Supports light and dark modes.
 
 ## Goals
-- Pixel-perfect recreation of the Apple Time Machine stacked card aesthetic
+- Pixel-perfect recreation of the Apple Better Watch stacked card aesthetic
 - Smooth 60fps animations for card transitions and timeline dragging
 - Responsive design across desktop, tablet, and mobile breakpoints
 - Full keyboard and screen reader accessibility
@@ -252,7 +252,7 @@ These commands must pass for every user story:
 - [ ] On page load, card stack animates in from translateY(40px) and opacity(0) over 0.8s
 - [ ] Timeline fades in from translateX(20px) and opacity(0) with slight delay (0.3s)
 - [ ] Background cards have a subtle blue-tinted overlay increasing with depth
-- [ ] Keyboard shortcut Cmd+Shift+T (or Ctrl+Shift+T) logs "Toggle Time Machine view" to console
+- [ ] Keyboard shortcut Cmd+Shift+T (or Ctrl+Shift+T) logs "Toggle Better Watch view" to console
 - [ ] All transitions feel smooth and polished
 - [ ] No visual glitches on initial render or during navigation
 
@@ -293,4 +293,4 @@ These commands must pass for every user story:
 ## Open Questions
 - Should post images use remote Unsplash URLs or local placeholder images for reliability?
 - What should the full post view look like when a card is clicked (modal, slide-in panel, or new page)?
-- Should the keyboard shortcut toggle hide/show the entire Time Machine view or switch between views?
+- Should the keyboard shortcut toggle hide/show the entire Better Watch view or switch between views?

@@ -1,10 +1,10 @@
-# PRD: AI SRE Agent Audit Log — Time Machine
+# PRD: AI SRE Agent Audit Log — Better Watch
 
 ## Overview
-Transform the existing personal blog application into an AI SRE Agent Audit Log viewer. The Time Machine 3D stacked-card interface is repurposed to display a chronological feed of everything an AI SRE agent does: incidents detected, root causes found, configuration changes applied, dynamic instrumentation updates, metric anomalies investigated, and resolutions enacted. Each card renders a beautiful inline SVG artifact (sparkline charts, service topology diagrams, status grids, diff views, log traces) instead of a blog post image. All other pages (home, blog, blog/[slug], PRs, PRs/[number]) are removed; the Time Machine becomes the sole full-screen experience. Data is fully mocked for demo purposes.
+Transform the existing personal blog application into an AI SRE Agent Audit Log viewer. The Better Watch 3D stacked-card interface is repurposed to display a chronological feed of everything an AI SRE agent does: incidents detected, root causes found, configuration changes applied, dynamic instrumentation updates, metric anomalies investigated, and resolutions enacted. Each card renders a beautiful inline SVG artifact (sparkline charts, service topology diagrams, status grids, diff views, log traces) instead of a blog post image. All other pages (home, blog, blog/[slug], PRs, PRs/[number]) are removed; the Better Watch becomes the sole full-screen experience. Data is fully mocked for demo purposes.
 
 ## Goals
-- Single-page app: Time Machine audit log is the only route
+- Single-page app: Better Watch audit log is the only route
 - Beautiful, demo-ready visualization of AI SRE agent activity
 - Each event card renders a unique, contextual SVG artifact (charts, diagrams, grids)
 - Maintain the existing 3D stacked-card aesthetic and smooth 60fps animations
@@ -19,8 +19,8 @@ These commands must pass for every user story:
 
 ## User Stories
 
-### US-001: Remove All Pages Except Time Machine and Update Routing
-**Description:** Delete all pages and routes except the Time Machine view. Remove `/app/page.tsx` (home), `/app/blog/` directory, `/app/prs/` directory, and the `/content/blog/` MDX content directory. Remove unused components: `blog-view.tsx`, `blog-list.tsx`, `pr-list.tsx`, `pr-stats.tsx`, `code-block.tsx`, `heading-link.tsx`, `image-carousel.tsx`, `toc.tsx`, `page-layout.tsx`. Remove unused lib files: `blog.ts`, `prs.ts`, `mdx.ts`. Remove `/components/pr-table.tsx`. Update `app/page.tsx` to render the Time Machine as the root route. Clean up any broken imports in remaining files.
+### US-001: Remove All Pages Except Better Watch and Update Routing
+**Description:** Delete all pages and routes except the Better Watch view. Remove `/app/page.tsx` (home), `/app/blog/` directory, `/app/prs/` directory, and the `/content/blog/` MDX content directory. Remove unused components: `blog-view.tsx`, `blog-list.tsx`, `pr-list.tsx`, `pr-stats.tsx`, `code-block.tsx`, `heading-link.tsx`, `image-carousel.tsx`, `toc.tsx`, `page-layout.tsx`. Remove unused lib files: `blog.ts`, `prs.ts`, `mdx.ts`. Remove `/components/pr-table.tsx`. Update `app/page.tsx` to render the Better Watch as the root route. Clean up any broken imports in remaining files.
 
 **Priority:** P1
 
@@ -31,9 +31,9 @@ These commands must pass for every user story:
 - [ ] Unused components removed: `blog-view.tsx`, `blog-list.tsx`, `pr-list.tsx`, `pr-stats.tsx`, `code-block.tsx`, `heading-link.tsx`, `image-carousel.tsx`, `toc.tsx`, `page-layout.tsx`
 - [ ] Unused lib files removed: `blog.ts`, `prs.ts`, `mdx.ts`
 - [ ] `/components/pr-table.tsx` removed
-- [ ] `app/page.tsx` renders the Time Machine component as the root route
+- [ ] `app/page.tsx` renders the Better Watch component as the root route
 - [ ] No broken imports — `npm run build` succeeds
-- [ ] Only the root route `/` exists, serving the Time Machine view
+- [ ] Only the root route `/` exists, serving the Better Watch view
 
 ### US-002: Define SRE Event Types and Create Mock Dataset
 **Description:** Create a comprehensive TypeScript type system for SRE audit log events in `lib/sre-events.ts`. Define an `SREEvent` type with fields: `id`, `title`, `summary`, `timestamp`, `eventType` (enum: `incident_detected`, `root_cause_found`, `config_change`, `instrumentation_update`, `metric_anomaly`, `service_topology_change`, `alert_resolved`, `deployment_detected`, `runbook_executed`), `severity` (enum: `critical`, `warning`, `info`, `success`), `service` (affected service name), `artifactType` (enum: `sparkline`, `area_chart`, `bar_chart`, `topology_diagram`, `dependency_graph`, `status_grid`, `diff_view`, `log_trace`, `timeline`), and `artifactData` (typed object with chart data points, node/edge lists, diff lines, etc.). Create a static array of 20+ mock events spanning the last 72 hours with realistic SRE scenarios. Sort by timestamp descending (newest first).
@@ -120,8 +120,8 @@ These commands must pass for every user story:
 - [ ] Timestamp shown as relative time (e.g., "2h ago", "15m ago")
 - [ ] Card has a severity-colored top border (3px) for visual hierarchy
 
-### US-007: Update Time Machine Component for SRE Events
-**Description:** Refactor `app/components/time-machine.tsx` to accept `SREEvent[]` instead of `Post[]`. Update the root page (`app/page.tsx`) to import `mockSREEvents` from `lib/sre-events.ts` and pass them to the Time Machine. Remove the `Link` wrapper around cards (events don't navigate to blog posts). Keep all existing 3D stack animations, scroll/keyboard navigation, and timeline scrubber logic intact. Update the empty state message to "No events recorded." Ensure the component renders correctly with the new event card layout from US-006.
+### US-007: Update Better Watch Component for SRE Events
+**Description:** Refactor `app/components/time-machine.tsx` to accept `SREEvent[]` instead of `Post[]`. Update the root page (`app/page.tsx`) to import `mockSREEvents` from `lib/sre-events.ts` and pass them to the Better Watch. Remove the `Link` wrapper around cards (events don't navigate to blog posts). Keep all existing 3D stack animations, scroll/keyboard navigation, and timeline scrubber logic intact. Update the empty state message to "No events recorded." Ensure the component renders correctly with the new event card layout from US-006.
 
 **Priority:** P1
 **Depends on:** US-006
@@ -252,4 +252,4 @@ These commands must pass for every user story:
 - Lighthouse performance score >= 90 on desktop
 - Animations maintain 60fps as measured by Chrome DevTools performance panel
 - SVG artifacts render without layout shift or visual glitches
-- Time Machine navigation (scroll, keyboard, timeline drag) feels identical to the original blog version
+- Better Watch navigation (scroll, keyboard, timeline drag) feels identical to the original blog version

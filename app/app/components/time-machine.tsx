@@ -439,7 +439,7 @@ function DetailPanel({
   );
 }
 
-// ── Time Machine ─────────────────────────────────────────────────────────────
+// ── Better Watch ─────────────────────────────────────────────────────────────
 
 interface TimeMachineProps {
   events: SREEvent[];

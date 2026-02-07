@@ -1,12 +1,12 @@
 {
-  "name": "AI SRE Agent Audit Log — Time Machine",
-  "description": "Transform the existing personal blog application into an AI SRE Agent Audit Log viewer. The Time Machine 3D stacked-card interface is repurposed to display a chronological feed of everything an AI SRE agent does: incidents detected, root causes found, configuration changes applied, dynamic instrumentation updates, metric anomalies investigated, and resolutions enacted. Each card renders a beautiful inline SVG artifact (sparkline charts, service topology diagrams, status grids, diff views, log traces) instead of a blog post image. All other pages (home, blog, blog/[slug], PRs, PRs/[number]) are removed; the Time Machine becomes the sole full-screen experience. Data is fully mocked for demo purposes.",
+  "name": "AI SRE Agent Audit Log — Better Watch",
+  "description": "Transform the existing personal blog application into an AI SRE Agent Audit Log viewer. The Better Watch 3D stacked-card interface is repurposed to display a chronological feed of everything an AI SRE agent does: incidents detected, root causes found, configuration changes applied, dynamic instrumentation updates, metric anomalies investigated, and resolutions enacted. Each card renders a beautiful inline SVG artifact (sparkline charts, service topology diagrams, status grids, diff views, log traces) instead of a blog post image. All other pages (home, blog, blog/[slug], PRs, PRs/[number]) are removed; the Better Watch becomes the sole full-screen experience. Data is fully mocked for demo purposes.",
   "branchName": "ralph/sre-audit-log",
   "userStories": [
     {
       "id": "US-001",
-      "title": "Remove All Pages Except Time Machine and Update Routing",
-      "description": "Delete all pages and routes except the Time Machine view. Remove `/app/page.tsx` (home), `/app/blog/` directory, `/app/prs/` directory, and the `/content/blog/` MDX content directory. Remove unused components: `blog-view.tsx`, `blog-list.tsx`, `pr-list.tsx`, `pr-stats.tsx`, `code-block.tsx`, `heading-link.tsx`, `image-carousel.tsx`, `toc.tsx`, `page-layout.tsx`. Remove unused lib files: `blog.ts`, `prs.ts`, `mdx.ts`. Remove `/components/pr-table.tsx`. Update `app/page.tsx` to render the Time Machine as the root route. Clean up any broken imports in remaining files.",
+      "title": "Remove All Pages Except Better Watch and Update Routing",
+      "description": "Delete all pages and routes except the Better Watch view. Remove `/app/page.tsx` (home), `/app/blog/` directory, `/app/prs/` directory, and the `/content/blog/` MDX content directory. Remove unused components: `blog-view.tsx`, `blog-list.tsx`, `pr-list.tsx`, `pr-stats.tsx`, `code-block.tsx`, `heading-link.tsx`, `image-carousel.tsx`, `toc.tsx`, `page-layout.tsx`. Remove unused lib files: `blog.ts`, `prs.ts`, `mdx.ts`. Remove `/components/pr-table.tsx`. Update `app/page.tsx` to render the Better Watch as the root route. Clean up any broken imports in remaining files.",
       "acceptanceCriteria": [
         "`/app/blog/` directory and all contents deleted",
         "`/app/prs/` directory and all contents deleted",
@@ -14,9 +14,9 @@
         "Unused components removed: `blog-view.tsx`, `blog-list.tsx`, `pr-list.tsx`, `pr-stats.tsx`, `code-block.tsx`, `heading-link.tsx`, `image-carousel.tsx`, `toc.tsx`, `page-layout.tsx`",
         "Unused lib files removed: `blog.ts`, `prs.ts`, `mdx.ts`",
         "`/components/pr-table.tsx` removed",
-        "`app/page.tsx` renders the Time Machine component as the root route",
+        "`app/page.tsx` renders the Better Watch component as the root route",
         "No broken imports — `npm run build` succeeds",
-        "Only the root route `/` exists, serving the Time Machine view"
+        "Only the root route `/` exists, serving the Better Watch view"
       ],
       "priority": 1,
       "passes": false,
@@ -136,8 +136,8 @@
     },
     {
       "id": "US-007",
-      "title": "Update Time Machine Component for SRE Events",
-      "description": "Refactor `app/components/time-machine.tsx` to accept `SREEvent[]` instead of `Post[]`. Update the root page (`app/page.tsx`) to import `mockSREEvents` from `lib/sre-events.ts` and pass them to the Time Machine. Remove the `Link` wrapper around cards (events don't navigate to blog posts). Keep all existing 3D stack animations, scroll/keyboard navigation, and timeline scrubber logic intact. Update the empty state message to \"No events recorded.\" Ensure the component renders correctly with the new event card layout from US-006.",
+      "title": "Update Better Watch Component for SRE Events",
+      "description": "Refactor `app/components/time-machine.tsx` to accept `SREEvent[]` instead of `Post[]`. Update the root page (`app/page.tsx`) to import `mockSREEvents` from `lib/sre-events.ts` and pass them to the Better Watch. Remove the `Link` wrapper around cards (events don't navigate to blog posts). Keep all existing 3D stack animations, scroll/keyboard navigation, and timeline scrubber logic intact. Update the empty state message to \"No events recorded.\" Ensure the component renders correctly with the new event card layout from US-006.",
       "acceptanceCriteria": [
         "`TimeMachine` component accepts `events: SREEvent[]` instead of `posts: Post[]`",
         "`app/page.tsx` imports `mockSREEvents` and passes them to `<TimeMachine events={mockSREEvents} />`",
