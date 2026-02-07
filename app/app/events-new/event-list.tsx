@@ -351,23 +351,11 @@ function DetailModal({ event, status, onClose, onApprove, onReject }: DetailModa
       <motion.div
         ref={panelRef}
         className="relative w-full max-w-3xl max-h-[85vh] overflow-y-auto rounded-xl bg-white dark:bg-neutral-900 shadow-2xl"
-        style={{ borderTop: `3px solid ${severityColor}` }}
         initial={{ y: 40, opacity: 0, scale: 0.97 }}
         animate={{ y: 0, opacity: 1, scale: 1 }}
         exit={{ y: 40, opacity: 0, scale: 0.97 }}
         transition={{ type: "spring", stiffness: 400, damping: 30 }}
       >
-        {/* Close button */}
-        <button
-          onClick={onClose}
-          className="absolute top-3 right-3 z-10 w-8 h-8 flex items-center justify-center rounded-full bg-neutral-100 dark:bg-neutral-800 text-neutral-500 dark:text-neutral-400 hover:bg-neutral-200 dark:hover:bg-neutral-700 transition-colors"
-          aria-label="Close"
-        >
-          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
-            <path d="M1 1l12 12M13 1L1 13" />
-          </svg>
-        </button>
-
         {/* Content */}
         <div className="p-6 space-y-5">
           {/* Badges row */}
