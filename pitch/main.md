@@ -1,4 +1,4 @@
-# Better Brain -- Stage Script
+# Better Watch -- Stage Script
 
 > Read this naturally. Pause where you see [pause].
 > Advance slides where you see [NEXT].
@@ -6,65 +6,69 @@
 
 ---
 
-[SLIDE 1 -- title: "Better Brain"]
+[SLIDE 1 -- title: "Better Watch"]
 
 Hey everyone,
 
-[NEXT → SLIDE 2 -- slack messages]
+[NEXT → SLIDE 2 -- production issues]
 
-Every engineer has gotten that message -- "hey, is this customer
-experiencing issues?" or "how are users actually using this
-feature?" [pause]
+Every engineer has gotten that alert -- "something's broken in prod"
+or "users are seeing errors." [pause]
 
-You go check your logs... and the answer just isn't there.
-Because you never thought to log it.
+You dig through logs, traces, maybe replay the session. You find the
+bug. You write a fix. You open a PR. You wait for review and deploy.
+And the whole time, the issue is still live.
 
 [NEXT → SLIDE 3 -- the loop]
 
-So you do what every engineer does. You add more logging, you
-redeploy, you wait, and you hope the problem happens again. [pause]
+So you do what every engineer does. You triage, you patch, you
+deploy, and you hope nothing else breaks. [pause] Mean time to
+resolution stays high. Again and again.
 
-[NEXT → SLIDE 4 -- "observability is write-first"]
+[NEXT → SLIDE 4 -- "observability isn't enough"]
 
-This is broken. Observability today forces you to predict what
-data you'll need before you need it. And you're almost always
-wrong.
+This is broken. Observability tells you *that* something is wrong.
+It doesn't fix it. You're still on the hook for every diagnosis and
+every deploy.
 
-[NEXT → SLIDE 5 -- introducing Better Brain]
+[NEXT → SLIDE 5 -- introducing Better Watch]
 
 [pause]
 
-So we built Better Brain. It's an agent that continuously learns
-your running application and always has the data to answer your
-questions.
+So we built Better Watch. It's an intelligent observability and
+analytics agent that automatically detects, diagnoses, and patches
+production issues in real-time — at runtime. No waiting for the next
+deploy.
 
 Here's how. [pause]
 
-[NEXT → SLIDE 6 -- dynamic instrumentation]
+[NEXT → SLIDE 6 -- detect, patch, deploy]
 
-Better Brain uses dynamic instrumentation -- it attaches probes
-to your live code, captures variable values and execution paths
-in real time. No code changes. No redeploys. Near-zero overhead.
+Better Watch detects bugs, generates patches, and deploys them as
+toggleable fixes — like feature flags. You can turn them on or off
+in real-time. Once a patch is validated in production, Better Watch
+creates a PR with the permanent fix.
 
-[NEXT → SLIDE 7 -- architecture diagram]
+[NEXT → SLIDE 7 -- architecture / lifecycle]
 
-It deploys next to your services, in any cloud. The data comes
-out as rich, wide events, exported to tools you already use --
-like Sentry. And you talk to it through MCP, from your IDE, your
-terminal, whatever you want.
+When the PR is merged, the runtime patch is automatically
+decommissioned. So you get fast mitigation first, then a clean path
+to a permanent fix — with human oversight every step of the way.
 
-[NEXT → SLIDE 8 -- "agent decides what to observe"]
+[NEXT → SLIDE 8 -- "agent decides what to fix"]
 
-But the key insight is this -- the agent decides what to observe.
-It learns your application, identifies gaps in coverage, and
-adjusts its instrumentation automatically. It's not static. It
-gets smarter over time.
+The key insight: the agent decides what to observe and what to fix.
+It learns your application, identifies issues, and applies patches
+automatically. It's not static. It gets smarter over time — and
+dramatically reduces MTTR.
 
 [NEXT → SLIDE 9 -- before / after]
 
 [pause]
 
-No more log lines. No more trace configs. You just ask.
+No more long triage cycles. No more "fix in the next release." You
+get runtime patches now, and a PR for the real fix when you're
+ready.
 
 [NEXT → SLIDE 10 -- "let me show you"]
 
@@ -78,6 +82,6 @@ Let me show you what this looks like.
 
 [NEXT → SLIDE 11 -- closing]
 
-Better Brain. Stop writing logs. Start getting answers.
+Better Watch. Detect, patch, and fix production issues in real-time.
 
 Thank you.
