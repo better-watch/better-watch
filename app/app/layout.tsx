@@ -19,9 +19,9 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "AI SRE Agent — Audit Log",
+  title: "Better Watch — Detect, patch, and fix production issues in real-time",
   description:
-    "Real-time audit log of AI SRE agent actions, deployments, and infrastructure events",
+    "An intelligent observability and analytics agent that automatically detects, diagnoses, and patches production issues at runtime. No waiting for the next deploy.",
 };
 
 export const viewport = {
