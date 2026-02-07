@@ -1,8 +1,8 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
 # dependencies
-/node_modules
-/.pnp
+node_modules/
+.pnp
 .pnp.*
 .yarn/*
 !.yarn/patches
@@ -11,14 +11,15 @@
 !.yarn/versions
 
 # testing
-/coverage
+coverage/
 
 # next.js
-/.next/
-/out/
+.next/
+out/
 
 # production
-/build
+build/
+dist/
 
 # misc
 .DS_Store
@@ -44,7 +45,10 @@ next-env.d.ts
 scripts/*
 
 # PR videos (large files)
-/pr-videos
+pr-videos/
 
 # Raw PR images (unoptimized)
-/pr-images-raw
+pr-images-raw/
+
+# Untracked folders
+self-healing-old_1/
