@@ -1,0 +1,24 @@
+{
+  "name": "@self-healing/agent",
+  "version": "1.0.0",
+  "description": "Hono web server with Datadog dynamic instrumentation",
+  "type": "module",
+  "main": "dist/index.js",
+  "scripts": {
+    "dev": "bun --watch src/index.ts",
+    "build": "bun build ./src/index.ts --outdir ./dist --target node",
+    "typecheck": "tsc --noEmit",
+    "start": "node dist/index.js"
+  },
+  "dependencies": {
+    "hono": "^4.0.0",
+    "@hono/node-server": "^1.8.0",
+    "dd-trace": "^5.48.0",
+    "zod": "^3.22.4",
+    "@hono/zod-validator": "^0.2.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.3.3",
+    "@types/node": "^20.11.0"
+  }
+}
