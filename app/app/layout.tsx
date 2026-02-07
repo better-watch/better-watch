@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import localFont from "next/font/local";
 import { Toaster } from "sonner";
 import { SessionProvider } from "next-auth/react";
 import { ThemeProvider } from "@/components/theme-provider";
@@ -15,6 +16,12 @@ const geistSans = Geist({
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
+  display: "swap",
+});
+
+const alliance = localFont({
+  src: "../public/fonts/AllianceNo2Regular/Alliance No.2 Regular.otf",
+  variable: "--font-alliance",
   display: "swap",
 });
 
@@ -55,7 +62,7 @@ export default function RootLayout({
 }>) {
   return (
     <html
-      className={`${geistSans.variable} ${geistMono.variable}`}
+      className={`${geistSans.variable} ${geistMono.variable} ${alliance.variable}`}
       lang="en"
       suppressHydrationWarning
     >

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { ThemeToggle } from "@/components/theme-toggle";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -22,6 +23,7 @@ function LandingHeader() {
           >
             Open App
           </Link>
+          <ThemeToggle />
           <Button asChild size="sm">
             <Link href="/chat">Get Started</Link>
           </Button>
@@ -35,7 +37,7 @@ function HeroSection() {
   return (
     <section className="relative overflow-hidden px-6 pb-24 pt-40 md:pt-48">
       <div className="mx-auto max-w-4xl text-center">
-        <h1 className="text-4xl font-medium tracking-tight text-heading sm:text-5xl md:text-6xl">
+        <h1 className="font-alliance text-4xl font-medium tracking-tight text-heading sm:text-5xl md:text-6xl">
           Detect, patch, and fix
           <br />
           <span className="text-chart-1">production issues in runtime</span>
