@@ -12,12 +12,76 @@ import {
   CheckCircle,
   Rocket,
   BookOpen,
+  Clock,
+  ShieldCheck,
+  XCircle,
+  Loader2,
 } from "lucide-react";
 import type { SREEvent } from "@/lib/sre-events";
 
 import { SparklineChart, AreaChart, BarChart } from "../components/artifacts/metric-charts";
 import { TopologyDiagram, DependencyGraph } from "../components/artifacts/architecture-diagrams";
 import { StatusGrid, DiffView, LogTrace } from "../components/artifacts/detail-artifacts";
+
+// ── Issue status ─────────────────────────────────────────────────────────────
+
+type IssueStatus = "pending" | "approved" | "applying" | "resolved" | "rejected";
+
+const STATUS_CONFIG: Record<IssueStatus, { label: string; color: string; bg: string; icon: React.ElementType }> = {
+  pending: { label: "Awaiting Approval", color: "text-amber-600 dark:text-amber-400", bg: "bg-amber-50 dark:bg-amber-950/30", icon: Clock },
+  approved: { label: "Approved", color: "text-blue-600 dark:text-blue-400", bg: "bg-blue-50 dark:bg-blue-950/30", icon: ShieldCheck },
+  applying: { label: "Applying Fix…", color: "text-blue-600 dark:text-blue-400", bg: "bg-blue-50 dark:bg-blue-950/30", icon: Loader2 },
+  resolved: { label: "Resolved", color: "text-emerald-600 dark:text-emerald-400", bg: "bg-emerald-50 dark:bg-emerald-950/30", icon: CheckCircle },
+  rejected: { label: "Rejected", color: "text-neutral-500 dark:text-neutral-400", bg: "bg-neutral-50 dark:bg-neutral-800/30", icon: XCircle },
+};
+
+// ── Mock proposed fixes per event type ───────────────────────────────────────
+
+const PROPOSED_FIXES: Record<string, { action: string; description: string }> = {
+  incident_detected: {
+    action: "Enable circuit breaker & scale up replicas",
+    description: "The agent will enable the circuit breaker on the affected service to stop cascading failures, then scale the deployment from 3 to 5 replicas to absorb the error backlog.",
+  },
+  root_cause_found: {
+    action: "Reduce timeout & enable retry with backoff",
+    description: "The agent will update the upstream adapter timeout from 30s to 5s and enable exponential retry with a maximum of 3 attempts to prevent connection pool exhaustion.",
+  },
+  config_change: {
+    action: "Apply recommended config patch",
+    description: "The agent will apply the configuration diff shown above to production. The change has been validated against the canary environment with zero errors over a 15-minute window.",
+  },
+  instrumentation_update: {
+    action: "Deploy updated probe to all replicas",
+    description: "The agent will compile the eBPF probe for the target kernel version and deploy it across all replicas. Histogram collection will be verified post-deployment.",
+  },
+  metric_anomaly: {
+    action: "Auto-scale & trigger resource profiling",
+    description: "The agent will initiate horizontal auto-scaling based on current load, and attach a resource profiler to identify the root cause of the anomaly.",
+  },
+  service_topology_change: {
+    action: "Update service mesh routing rules",
+    description: "The agent will update the Envoy sidecar configuration to reflect the new topology and ensure traffic is routed correctly to healthy endpoints.",
+  },
+  alert_resolved: {
+    action: "Close incident & update post-mortem",
+    description: "The agent will mark the incident as resolved in the incident management system, close the PagerDuty alert, and generate a post-mortem draft.",
+  },
+  deployment_detected: {
+    action: "Promote canary to stable",
+    description: "The agent will shift 100% of traffic to the new version after confirming error rate and latency are within SLO thresholds during the canary window.",
+  },
+  runbook_executed: {
+    action: "Execute automated remediation runbook",
+    description: "The agent will run the associated runbook steps sequentially with rollback checkpoints. Each step will be verified before proceeding to the next.",
+  },
+};
+
+// ── Default initial statuses (mock: recent critical/warning = pending, old ones = resolved) ──
+
+function getInitialStatus(event: SREEvent): IssueStatus {
+  if (event.id === "evt-001") return "pending";
+  return "resolved";
+}
 
 // ── Severity colors ──────────────────────────────────────────────────────────
 
@@ -109,12 +173,35 @@ function ArtifactRenderer({ event }: { event: SREEvent }) {
   }
 }
 
+// ── Status Badge (inline) ────────────────────────────────────────────────────
+
+function StatusBadge({ status }: { status: IssueStatus }) {
+  const config = STATUS_CONFIG[status];
+  const Icon = config.icon;
+  const isSpinning = status === "applying";
+
+  return (
+    <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] font-medium ${config.color} ${config.bg}`}>
+      <Icon size={12} className={isSpinning ? "animate-spin" : ""} />
+      {config.label}
+    </span>
+  );
+}
+
 // ── Event Row ────────────────────────────────────────────────────────────────
 
-function EventRow({ event, index, onSelect }: { event: SREEvent; index: number; onSelect: () => void }) {
+interface EventRowProps {
+  event: SREEvent;
+  index: number;
+  status: IssueStatus;
+  onSelect: () => void;
+}
+
+function EventRow({ event, index, status, onSelect }: EventRowProps) {
   const severityColor = SEVERITY_COLORS[event.severity] ?? SEVERITY_COLORS.info;
   const config = EVENT_TYPE_CONFIG[event.eventType] ?? EVENT_TYPE_CONFIG.incident_detected;
   const Icon = config.icon;
+  const isActionable = status === "pending";
 
   return (
     <motion.div
@@ -126,7 +213,7 @@ function EventRow({ event, index, onSelect }: { event: SREEvent; index: number; 
         onClick={onSelect}
         className="group w-full text-left"
       >
-        <div className="flex items-center gap-3 px-4 py-3 rounded-lg transition-colors hover:bg-neutral-50 dark:hover:bg-neutral-800/50">
+        <div className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-colors hover:bg-neutral-50 dark:hover:bg-neutral-800/50 ${isActionable ? "bg-amber-50/40 dark:bg-amber-950/10" : ""}`}>
           {/* Severity dot */}
           <span
             className="w-2 h-2 rounded-full shrink-0"
@@ -139,18 +226,18 @@ function EventRow({ event, index, onSelect }: { event: SREEvent; index: number; 
             className="shrink-0 text-neutral-400 dark:text-neutral-500"
           />
 
-          {/* Event type label */}
-          <span className="shrink-0 w-28 text-xs font-medium text-neutral-500 dark:text-neutral-400 truncate">
-            {config.label}
-          </span>
-
           {/* Title */}
           <span className="flex-1 text-sm font-medium text-neutral-900 dark:text-neutral-100 truncate">
             {event.title}
           </span>
 
+          {/* Status badge */}
+          <span className="hidden sm:inline-flex shrink-0">
+            <StatusBadge status={status} />
+          </span>
+
           {/* Service */}
-          <span className="hidden sm:inline-block shrink-0 px-2 py-0.5 rounded bg-neutral-100 dark:bg-neutral-800 text-xs font-mono text-neutral-500 dark:text-neutral-400">
+          <span className="hidden md:inline-block shrink-0 px-2 py-0.5 rounded bg-neutral-100 dark:bg-neutral-800 text-xs font-mono text-neutral-500 dark:text-neutral-400">
             {event.service}
           </span>
 
@@ -166,11 +253,20 @@ function EventRow({ event, index, onSelect }: { event: SREEvent; index: number; 
 
 // ── Detail Modal ─────────────────────────────────────────────────────────────
 
-function DetailModal({ event, onClose }: { event: SREEvent; onClose: () => void }) {
+interface DetailModalProps {
+  event: SREEvent;
+  status: IssueStatus;
+  onClose: () => void;
+  onApprove: () => void;
+  onReject: () => void;
+}
+
+function DetailModal({ event, status, onClose, onApprove, onReject }: DetailModalProps) {
   const panelRef = useRef<HTMLDivElement>(null);
   const severityColor = SEVERITY_COLORS[event.severity] ?? SEVERITY_COLORS.info;
   const config = EVENT_TYPE_CONFIG[event.eventType] ?? EVENT_TYPE_CONFIG.incident_detected;
   const Icon = config.icon;
+  const fix = PROPOSED_FIXES[event.eventType] ?? PROPOSED_FIXES.incident_detected;
 
   useEffect(() => {
     const handleKey = (e: KeyboardEvent) => {
@@ -223,13 +319,13 @@ function DetailModal({ event, onClose }: { event: SREEvent; onClose: () => void 
         </button>
 
         {/* Artifact */}
-        <div className={`p-6 min-h-[280px] flex items-center justify-center ${SEVERITY_BG[event.severity] ?? ""}`}>
+        <div className={`p-6 min-h-[240px] flex items-center justify-center ${SEVERITY_BG[event.severity] ?? ""}`}>
           <ArtifactRenderer event={event} />
         </div>
 
         {/* Content */}
-        <div className="p-6 space-y-4">
-          {/* Badges */}
+        <div className="p-6 space-y-5">
+          {/* Badges row */}
           <div className="flex items-center gap-2 flex-wrap">
             <span
               className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-medium text-white"
@@ -241,6 +337,7 @@ function DetailModal({ event, onClose }: { event: SREEvent; onClose: () => void 
             <span className="px-2 py-0.5 rounded bg-neutral-100 dark:bg-neutral-800 text-xs font-mono text-neutral-600 dark:text-neutral-400">
               {event.service}
             </span>
+            <StatusBadge status={status} />
             <span className="text-xs text-neutral-400 dark:text-neutral-500 ml-auto">
               {relativeTime(event.timestamp)}
             </span>
@@ -248,13 +345,78 @@ function DetailModal({ event, onClose }: { event: SREEvent; onClose: () => void 
 
           {/* Title + summary */}
           <div>
-            <h2 className="text-2xl font-semibold text-neutral-900 dark:text-neutral-100">
+            <h2 className="text-xl font-semibold text-neutral-900 dark:text-neutral-100">
               {event.title}
             </h2>
             <p className="mt-2 text-sm text-neutral-600 dark:text-neutral-400 leading-relaxed">
               {event.summary}
             </p>
           </div>
+
+          {/* Proposed fix */}
+          <div className="rounded-lg border border-neutral-200 dark:border-neutral-700/60 overflow-hidden">
+            <div className="px-4 py-2.5 bg-neutral-50 dark:bg-neutral-800/50 border-b border-neutral-200 dark:border-neutral-700/60">
+              <h3 className="text-xs font-semibold uppercase tracking-wider text-neutral-500 dark:text-neutral-400">
+                Proposed Fix
+              </h3>
+            </div>
+            <div className="px-4 py-3 space-y-2">
+              <p className="text-sm font-medium text-neutral-900 dark:text-neutral-100">
+                {fix.action}
+              </p>
+              <p className="text-sm text-neutral-500 dark:text-neutral-400 leading-relaxed">
+                {fix.description}
+              </p>
+            </div>
+          </div>
+
+          {/* Action buttons */}
+          {status === "pending" && (
+            <div className="flex items-center gap-3 pt-1">
+              <button
+                onClick={onApprove}
+                className="flex-1 inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-medium transition-colors"
+              >
+                <ShieldCheck size={16} />
+                Approve & Apply
+              </button>
+              <button
+                onClick={onReject}
+                className="flex-1 inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg bg-neutral-100 dark:bg-neutral-800 hover:bg-neutral-200 dark:hover:bg-neutral-700 text-neutral-700 dark:text-neutral-300 text-sm font-medium transition-colors"
+              >
+                <XCircle size={16} />
+                Reject
+              </button>
+            </div>
+          )}
+
+          {status === "applying" && (
+            <div className="flex items-center gap-2 pt-1 text-sm text-blue-600 dark:text-blue-400">
+              <Loader2 size={16} className="animate-spin" />
+              Agent is applying the fix…
+            </div>
+          )}
+
+          {status === "approved" && (
+            <div className="flex items-center gap-2 pt-1 text-sm text-blue-600 dark:text-blue-400">
+              <ShieldCheck size={16} />
+              Fix approved, queued for execution.
+            </div>
+          )}
+
+          {status === "resolved" && (
+            <div className="flex items-center gap-2 pt-1 text-sm text-emerald-600 dark:text-emerald-400">
+              <CheckCircle size={16} />
+              This issue has been resolved.
+            </div>
+          )}
+
+          {status === "rejected" && (
+            <div className="flex items-center gap-2 pt-1 text-sm text-neutral-500 dark:text-neutral-400">
+              <XCircle size={16} />
+              Fix was rejected. No changes applied.
+            </div>
+          )}
         </div>
       </motion.div>
     </motion.div>
@@ -269,6 +431,29 @@ interface EventListProps {
 
 export function EventList({ events }: EventListProps) {
   const [selectedEvent, setSelectedEvent] = useState<SREEvent | null>(null);
+  const [statuses, setStatuses] = useState<Record<string, IssueStatus>>(() => {
+    const initial: Record<string, IssueStatus> = {};
+    for (const event of events) {
+      initial[event.id] = getInitialStatus(event);
+    }
+    return initial;
+  });
+
+  const handleApprove = useCallback((eventId: string) => {
+    setStatuses((prev) => ({ ...prev, [eventId]: "approved" }));
+
+    // Simulate: approved -> applying after 500ms -> resolved after 3s
+    setTimeout(() => {
+      setStatuses((prev) => ({ ...prev, [eventId]: "applying" }));
+    }, 500);
+    setTimeout(() => {
+      setStatuses((prev) => ({ ...prev, [eventId]: "resolved" }));
+    }, 3500);
+  }, []);
+
+  const handleReject = useCallback((eventId: string) => {
+    setStatuses((prev) => ({ ...prev, [eventId]: "rejected" }));
+  }, []);
 
   if (events.length === 0) {
     return (
@@ -285,9 +470,9 @@ export function EventList({ events }: EventListProps) {
         <div className="flex items-center gap-3 px-4 pb-2 text-[11px] font-medium uppercase tracking-wider text-neutral-400 dark:text-neutral-500 select-none">
           <span className="w-2 shrink-0" />
           <span className="w-4 shrink-0" />
-          <span className="w-28 shrink-0">Type</span>
-          <span className="flex-1">Event</span>
-          <span className="hidden sm:inline-block shrink-0 w-28 text-center">Service</span>
+          <span className="flex-1">Issue</span>
+          <span className="hidden sm:inline-block shrink-0 w-32 text-center">Status</span>
+          <span className="hidden md:inline-block shrink-0 w-28 text-center">Service</span>
           <span className="shrink-0 w-16 text-right">When</span>
         </div>
 
@@ -296,7 +481,13 @@ export function EventList({ events }: EventListProps) {
         {/* Event rows */}
         <div className="divide-y divide-neutral-100 dark:divide-neutral-800/50">
           {events.map((event, index) => (
-            <EventRow key={event.id} event={event} index={index} onSelect={() => setSelectedEvent(event)} />
+            <EventRow
+              key={event.id}
+              event={event}
+              index={index}
+              status={statuses[event.id]}
+              onSelect={() => setSelectedEvent(event)}
+            />
           ))}
         </div>
       </div>
@@ -304,7 +495,13 @@ export function EventList({ events }: EventListProps) {
       {/* Modal */}
       <AnimatePresence>
         {selectedEvent && (
-          <DetailModal event={selectedEvent} onClose={() => setSelectedEvent(null)} />
+          <DetailModal
+            event={selectedEvent}
+            status={statuses[selectedEvent.id]}
+            onClose={() => setSelectedEvent(null)}
+            onApprove={() => handleApprove(selectedEvent.id)}
+            onReject={() => handleReject(selectedEvent.id)}
+          />
         )}
       </AnimatePresence>
     </>
