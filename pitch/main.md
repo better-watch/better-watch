@@ -8,7 +8,7 @@
 
 [SLIDE 1 -- title: "Better Brain"]
 
-Hey everyone, I'm [name]. I built Better Brain.
+Hey everyone,
 
 [NEXT → SLIDE 2 -- slack messages]
 
