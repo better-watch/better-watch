@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TraceInject Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+                'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+                sans-serif;
+            background: #f5f5f5;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            background: white;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        h1 {
+            font-size: 24px;
+            font-weight: 600;
+        }
+
+        .header-controls {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .selector {
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+            background: white;
+            cursor: pointer;
+        }
+
+        .selector:hover {
+            border-color: #999;
+        }
+
+        .main {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 20px;
+        }
+
+        .sidebar {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .dashboard {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .tabs {
+            display: flex;
+            gap: 0;
+            border-bottom: 1px solid #ddd;
+            margin-bottom: 20px;
+        }
+
+        .tab {
+            padding: 12px 20px;
+            cursor: pointer;
+            border: none;
+            background: none;
+            font-size: 14px;
+            color: #666;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -1px;
+            transition: all 0.2s;
+        }
+
+        .tab:hover {
+            color: #333;
+        }
+
+        .tab.active {
+            color: #0066cc;
+            border-bottom-color: #0066cc;
+        }
+
+        .search-bar {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        input[type="text"],
+        input[type="search"],
+        input[type="number"],
+        select,
+        textarea {
+            padding: 10px 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+            font-family: inherit;
+        }
+
+        input[type="text"]:focus,
+        input[type="search"]:focus,
+        input[type="number"]:focus,
+        select:focus,
+        textarea:focus {
+            outline: none;
+            border-color: #0066cc;
+            box-shadow: 0 0 0 3px rgba(0, 102, 204, 0.1);
+        }
+
+        .search-bar input {
+            flex: 1;
+        }
+
+        .button {
+            padding: 10px 16px;
+            background: #0066cc;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .button:hover {
+            background: #0052a3;
+        }
+
+        .button.secondary {
+            background: #e8e8e8;
+            color: #333;
+        }
+
+        .button.secondary:hover {
+            background: #d0d0d0;
+        }
+
+        .button.danger {
+            background: #dc3545;
+        }
+
+        .button.danger:hover {
+            background: #bb2d3b;
+        }
+
+        .traces-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .trace-item {
+            padding: 12px;
+            background: #f9f9f9;
+            border: 1px solid #e0e0e0;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .trace-item:hover {
+            background: #f0f0f0;
+            border-color: #0066cc;
+        }
+
+        .trace-item.active {
+            background: #e8f0ff;
+            border-color: #0066cc;
+        }
+
+        .trace-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .trace-title {
+            font-weight: 500;
+            color: #333;
+        }
+
+        .trace-time {
+            font-size: 12px;
+            color: #999;
+        }
+
+        .trace-meta {
+            font-size: 12px;
+            color: #666;
+        }
+
+        .detail-view {
+            display: none;
+        }
+
+        .detail-view.show {
+            display: block;
+        }
+
+        .variables {
+            background: #f9f9f9;
+            padding: 12px;
+            border-radius: 4px;
+            margin-top: 12px;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .variable {
+            padding: 8px;
+            background: white;
+            border: 1px solid #e0e0e0;
+            border-radius: 3px;
+            margin-bottom: 8px;
+            font-family: monospace;
+            font-size: 12px;
+        }
+
+        .variable-name {
+            font-weight: 500;
+            color: #0066cc;
+        }
+
+        .variable-value {
+            color: #666;
+            word-break: break-all;
+            margin-top: 4px;
+        }
+
+        .config-editor {
+            display: none;
+        }
+
+        .config-editor.show {
+            display: block;
+        }
+
+        textarea.config-textarea {
+            width: 100%;
+            height: 400px;
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        .filter-controls {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+        }
+
+        .filter-group {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .filter-group label {
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: #999;
+        }
+
+        .empty-state-icon {
+            font-size: 48px;
+            margin-bottom: 16px;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .stat-card {
+            background: #f9f9f9;
+            padding: 15px;
+            border-radius: 4px;
+            text-align: center;
+            border: 1px solid #e0e0e0;
+        }
+
+        .stat-value {
+            font-size: 24px;
+            font-weight: 600;
+            color: #0066cc;
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: #999;
+            margin-top: 5px;
+        }
+
+        .validation-error {
+            color: #dc3545;
+            font-size: 12px;
+            margin-top: 5px;
+        }
+
+        .success-message {
+            background: #d4edda;
+            color: #155724;
+            padding: 12px;
+            border-radius: 4px;
+            margin-bottom: 15px;
+            border: 1px solid #c3e6cb;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>TraceInject Dashboard</h1>
+            <div class="header-controls">
+                <select id="projectSelect" class="selector">
+                    <option value="">All Projects</option>
+                    <option value="project-1">Project 1</option>
+                    <option value="project-2">Project 2</option>
+                </select>
+                <select id="envSelect" class="selector">
+                    <option value="">All Environments</option>
+                    <option value="dev">Development</option>
+                    <option value="staging">Staging</option>
+                    <option value="prod">Production</option>
+                </select>
+            </div>
+        </header>
+
+        <div class="main">
+            <div class="dashboard">
+                <div class="tabs">
+                    <button class="tab active" data-tab="dashboard">Dashboard</button>
+                    <button class="tab" data-tab="traces">Traces</button>
+                    <button class="tab" data-tab="config">Config</button>
+                </div>
+
+                <!-- Dashboard Tab -->
+                <div id="dashboardTab" class="tab-content">
+                    <div class="stats">
+                        <div class="stat-card">
+                            <div class="stat-value" id="totalTraces">0</div>
+                            <div class="stat-label">Total Traces</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value" id="recentTraces">0</div>
+                            <div class="stat-label">Last 24h</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value" id="activeTracepoints">0</div>
+                            <div class="stat-label">Active Tracepoints</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value" id="errorRate">0%</div>
+                            <div class="stat-label">Error Rate</div>
+                        </div>
+                    </div>
+
+                    <h3 style="margin-bottom: 15px; font-size: 16px;">Recent Traces</h3>
+                    <div id="recentTracesList" class="traces-list"></div>
+                </div>
+
+                <!-- Traces Tab -->
+                <div id="tracesTab" class="tab-content" style="display: none;">
+                    <div class="search-bar">
+                        <input type="search" id="searchInput" placeholder="Search traces...">
+                        <button class="button secondary" id="filterBtn">Filters</button>
+                        <button class="button" id="exportBtn">Export</button>
+                    </div>
+
+                    <div class="filter-controls" id="filterControls" style="display: none;">
+                        <div class="filter-group">
+                            <label>Status:</label>
+                            <select id="statusFilter" class="selector">
+                                <option value="">All</option>
+                                <option value="success">Success</option>
+                                <option value="error">Error</option>
+                            </select>
+                        </div>
+                        <div class="filter-group">
+                            <label>From:</label>
+                            <input type="number" id="fromLine" placeholder="Line #" style="width: 80px;">
+                        </div>
+                        <div class="filter-group">
+                            <label>To:</label>
+                            <input type="number" id="toLine" placeholder="Line #" style="width: 80px;">
+                        </div>
+                    </div>
+
+                    <div class="traces-list" id="tracesList"></div>
+                </div>
+
+                <!-- Config Tab -->
+                <div id="configTab" class="tab-content" style="display: none;">
+                    <div style="margin-bottom: 15px;">
+                        <button class="button" id="saveConfigBtn">Save Config</button>
+                        <button class="button secondary" id="resetConfigBtn" style="margin-left: 10px;">Reset</button>
+                    </div>
+                    <div id="configMessage"></div>
+                    <textarea id="configEditor" class="config-textarea" placeholder="Paste or edit TraceInject configuration here...">
+{
+  "tracepoints": [
+    {
+      "id": "tp-1",
+      "location": "src/app.ts:42",
+      "type": "function-entry",
+      "capture": ["user", "request"]
+    }
+  ]
+}
+                    </textarea>
+                    <div style="margin-top: 15px; color: #666; font-size: 12px;">
+                        <strong>Configuration Format:</strong> JSON format compatible with TraceInject config schema.
+                    </div>
+                </div>
+            </div>
+
+            <!-- Detail View -->
+            <div id="detailView" class="detail-view">
+                <div style="background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                        <h2 id="detailTitle" style="font-size: 18px;">Trace Details</h2>
+                        <button class="button secondary" id="closeDetailBtn">Close</button>
+                    </div>
+                    <div id="detailContent"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Mock data for demo purposes
+        const mockTraces = [
+            {
+                id: 'trace-1',
+                timestamp: Date.now() - 60000,
+                file: 'src/app.ts',
+                line: 42,
+                function: 'handleRequest',
+                variables: { user: { id: 123, name: 'John Doe' }, request: { method: 'GET' } },
+                status: 'success'
+            },
+            {
+                id: 'trace-2',
+                timestamp: Date.now() - 300000,
+                file: 'src/database.ts',
+                line: 156,
+                function: 'executeQuery',
+                variables: { query: 'SELECT * FROM users WHERE id = ?', params: [123] },
+                status: 'success'
+            },
+            {
+                id: 'trace-3',
+                timestamp: Date.now() - 600000,
+                file: 'src/auth.ts',
+                line: 89,
+                function: 'validateToken',
+                variables: { token: '***REDACTED***', isValid: true },
+                status: 'success'
+            }
+        ];
+
+        const mockConfig = {
+            tracepoints: [
+                { id: 'tp-1', location: 'src/app.ts:42', type: 'function-entry', capture: ['user', 'request'] },
+                { id: 'tp-2', location: 'src/database.ts:156', type: 'function-entry', capture: ['query', 'params'] },
+                { id: 'tp-3', location: 'src/auth.ts:89', type: 'function-entry', capture: ['token'] }
+            ]
+        };
+
+        // State
+        let state = {
+            traces: mockTraces,
+            config: mockConfig,
+            selectedTrace: null,
+            filters: {
+                project: '',
+                environment: '',
+                status: '',
+                search: '',
+                fromLine: null,
+                toLine: null
+            }
+        };
+
+        // Tab switching
+        document.querySelectorAll('.tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                document.querySelectorAll('.tab-content').forEach(c => c.style.display = 'none');
+
+                tab.classList.add('active');
+                const tabId = tab.dataset.tab;
+                document.getElementById(tabId + 'Tab').style.display = 'block';
+
+                if (tabId === 'config') {
+                    document.getElementById('configEditor').value = JSON.stringify(state.config, null, 2);
+                }
+            });
+        });
+
+        // Search and filter
+        document.getElementById('searchInput').addEventListener('input', (e) => {
+            state.filters.search = e.target.value.toLowerCase();
+            renderTraces();
+        });
+
+        document.getElementById('filterBtn').addEventListener('click', () => {
+            const controls = document.getElementById('filterControls');
+            controls.style.display = controls.style.display === 'none' ? 'flex' : 'none';
+        });
+
+        document.getElementById('statusFilter').addEventListener('change', (e) => {
+            state.filters.status = e.target.value;
+            renderTraces();
+        });
+
+        // Project and environment selectors
+        document.getElementById('projectSelect').addEventListener('change', (e) => {
+            state.filters.project = e.target.value;
+            updateStats();
+        });
+
+        document.getElementById('envSelect').addEventListener('change', (e) => {
+            state.filters.environment = e.target.value;
+            updateStats();
+        });
+
+        // Export function
+        document.getElementById('exportBtn').addEventListener('click', () => {
+            const data = JSON.stringify(getFilteredTraces(), null, 2);
+            const blob = new Blob([data], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `traces-${new Date().toISOString().split('T')[0]}.json`;
+            a.click();
+        });
+
+        // Config editor
+        document.getElementById('saveConfigBtn').addEventListener('click', () => {
+            try {
+                const config = JSON.parse(document.getElementById('configEditor').value);
+                state.config = config;
+                showMessage('Configuration saved successfully', 'success');
+            } catch (e) {
+                showMessage('Invalid JSON: ' + e.message, 'error');
+            }
+        });
+
+        document.getElementById('resetConfigBtn').addEventListener('click', () => {
+            document.getElementById('configEditor').value = JSON.stringify(mockConfig, null, 2);
+        });
+
+        // Detail view
+        document.getElementById('closeDetailBtn').addEventListener('click', () => {
+            document.getElementById('detailView').classList.remove('show');
+            state.selectedTrace = null;
+        });
+
+        // Helper functions
+        function getFilteredTraces() {
+            return state.traces.filter(trace => {
+                if (state.filters.search && !JSON.stringify(trace).toLowerCase().includes(state.filters.search)) {
+                    return false;
+                }
+                if (state.filters.status && trace.status !== state.filters.status) {
+                    return false;
+                }
+                return true;
+            });
+        }
+
+        function renderTraces() {
+            const filtered = getFilteredTraces();
+            const listEl = document.getElementById('tracesList');
+
+            if (filtered.length === 0) {
+                listEl.innerHTML = '<div class="empty-state"><div class="empty-state-icon">📭</div><p>No traces found</p></div>';
+                return;
+            }
+
+            listEl.innerHTML = filtered.map(trace => `
+                <div class="trace-item" onclick="selectTrace('${trace.id}')">
+                    <div class="trace-header">
+                        <span class="trace-title">${trace.function} @ ${trace.file}:${trace.line}</span>
+                        <span class="trace-time">${new Date(trace.timestamp).toLocaleString()}</span>
+                    </div>
+                    <div class="trace-meta">Variables captured: ${Object.keys(trace.variables).length}</div>
+                </div>
+            `).join('');
+        }
+
+        function renderRecentTraces() {
+            const recent = state.traces.slice(0, 5);
+            const listEl = document.getElementById('recentTracesList');
+
+            if (recent.length === 0) {
+                listEl.innerHTML = '<div class="empty-state">No traces yet</div>';
+                return;
+            }
+
+            listEl.innerHTML = recent.map(trace => `
+                <div class="trace-item" onclick="selectTrace('${trace.id}')">
+                    <div class="trace-header">
+                        <span class="trace-title">${trace.function}</span>
+                        <span class="trace-time">${new Date(trace.timestamp).toLocaleString()}</span>
+                    </div>
+                    <div class="trace-meta">${trace.file}:${trace.line}</div>
+                </div>
+            `).join('');
+        }
+
+        function selectTrace(traceId) {
+            const trace = state.traces.find(t => t.id === traceId);
+            if (!trace) return;
+
+            state.selectedTrace = trace;
+            const detail = document.getElementById('detailView');
+            const content = document.getElementById('detailContent');
+
+            content.innerHTML = `
+                <div style="margin-bottom: 15px;">
+                    <p><strong>File:</strong> ${trace.file}</p>
+                    <p><strong>Line:</strong> ${trace.line}</p>
+                    <p><strong>Function:</strong> ${trace.function}</p>
+                    <p><strong>Time:</strong> ${new Date(trace.timestamp).toLocaleString()}</p>
+                    <p><strong>Status:</strong> <span style="color: ${trace.status === 'success' ? '#28a745' : '#dc3545'}">${trace.status}</span></p>
+                </div>
+                <h3 style="margin-top: 20px; margin-bottom: 10px;">Captured Variables</h3>
+                <div class="variables">
+                    ${Object.entries(trace.variables).map(([name, value]) => `
+                        <div class="variable">
+                            <div class="variable-name">${name}</div>
+                            <div class="variable-value">${typeof value === 'object' ? JSON.stringify(value, null, 2) : String(value)}</div>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+
+            detail.classList.add('show');
+        }
+
+        function updateStats() {
+            document.getElementById('totalTraces').textContent = state.traces.length;
+            const last24h = state.traces.filter(t => Date.now() - t.timestamp < 86400000).length;
+            document.getElementById('recentTraces').textContent = last24h;
+            document.getElementById('activeTracepoints').textContent = state.config.tracepoints.length;
+
+            const errors = state.traces.filter(t => t.status === 'error').length;
+            const errorRate = state.traces.length > 0 ? Math.round((errors / state.traces.length) * 100) : 0;
+            document.getElementById('errorRate').textContent = errorRate + '%';
+        }
+
+        function showMessage(msg, type) {
+            const el = document.getElementById('configMessage');
+            el.className = type === 'error' ? 'validation-error' : 'success-message';
+            el.textContent = msg;
+            setTimeout(() => { el.textContent = ''; }, 3000);
+        }
+
+        // Initialize
+        renderRecentTraces();
+        updateStats();
+    </script>
+</body>
+</html>

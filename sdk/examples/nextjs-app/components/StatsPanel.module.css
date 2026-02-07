@@ -1,0 +1,59 @@
+.panel {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-subtle);
+  border-radius: 16px;
+  padding: 2rem;
+  gap: 2rem;
+}
+
+.stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.value {
+  font-size: 2rem;
+  font-weight: 700;
+  font-family: 'JetBrains Mono', monospace;
+  background: linear-gradient(135deg, var(--accent-cyan), var(--accent-lime));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.value.warning {
+  background: linear-gradient(135deg, var(--accent-orange), var(--accent-magenta));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.label {
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.divider {
+  width: 1px;
+  height: 48px;
+  background: var(--border-subtle);
+}
+
+@media (max-width: 768px) {
+  .panel {
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .divider {
+    width: 80%;
+    height: 1px;
+  }
+}

@@ -1,0 +1,144 @@
+{
+  "name": "trace-inject-vscode",
+  "displayName": "TraceInject",
+  "description": "VS Code extension for trace point management and visualization",
+  "version": "0.1.0",
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "categories": [
+    "Debuggers",
+    "Visualization"
+  ],
+  "activationEvents": [
+    "onLanguage:javascript",
+    "onLanguage:typescript",
+    "onLanguage:javascriptreact",
+    "onLanguage:typescriptreact",
+    "workspaceContains:traceinject.config.json",
+    "onCommand:trace-inject.addTracepoint",
+    "onCommand:trace-inject.removeTracepoint",
+    "onCommand:trace-inject.viewConfig",
+    "onCommand:trace-inject.syncConfig"
+  ],
+  "main": "./dist/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "trace-inject.addTracepoint",
+        "title": "Add Tracepoint",
+        "category": "TraceInject",
+        "icon": "$(add)"
+      },
+      {
+        "command": "trace-inject.removeTracepoint",
+        "title": "Remove Tracepoint",
+        "category": "TraceInject",
+        "icon": "$(remove)"
+      },
+      {
+        "command": "trace-inject.viewConfig",
+        "title": "View Configuration",
+        "category": "TraceInject"
+      },
+      {
+        "command": "trace-inject.syncConfig",
+        "title": "Sync Configuration",
+        "category": "TraceInject"
+      },
+      {
+        "command": "trace-inject.toggleTracepoint",
+        "title": "Toggle Tracepoint",
+        "category": "TraceInject"
+      }
+    ],
+    "keybindings": [
+      {
+        "command": "trace-inject.addTracepoint",
+        "key": "ctrl+shift+t",
+        "mac": "cmd+shift+t",
+        "when": "editorTextFocus && editorLangId in trace-inject.supportedLanguages"
+      }
+    ],
+    "menus": {
+      "editor/context": [
+        {
+          "command": "trace-inject.addTracepoint",
+          "group": "debug",
+          "when": "editorTextFocus && editorLangId in trace-inject.supportedLanguages"
+        },
+        {
+          "command": "trace-inject.removeTracepoint",
+          "group": "debug",
+          "when": "editorTextFocus && editorLangId in trace-inject.supportedLanguages"
+        }
+      ],
+      "commandPalette": [
+        {
+          "command": "trace-inject.addTracepoint",
+          "when": "editorTextFocus && editorLangId in trace-inject.supportedLanguages"
+        },
+        {
+          "command": "trace-inject.removeTracepoint",
+          "when": "editorTextFocus && editorLangId in trace-inject.supportedLanguages"
+        },
+        {
+          "command": "trace-inject.viewConfig"
+        },
+        {
+          "command": "trace-inject.syncConfig"
+        },
+        {
+          "command": "trace-inject.toggleTracepoint",
+          "when": "editorTextFocus && editorLangId in trace-inject.supportedLanguages"
+        }
+      ]
+    },
+    "configuration": {
+      "title": "TraceInject",
+      "properties": {
+        "trace-inject.configFile": {
+          "type": "string",
+          "default": "traceinject.config.json",
+          "description": "Path to the trace injection configuration file"
+        },
+        "trace-inject.autoSync": {
+          "type": "boolean",
+          "default": true,
+          "description": "Automatically sync configuration when config file changes"
+        },
+        "trace-inject.gutterIconColor": {
+          "type": "string",
+          "default": "#007acc",
+          "description": "Color of the gutter tracepoint icons"
+        },
+        "trace-inject.enableCodeLens": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable CodeLens showing captured variables"
+        },
+        "trace-inject.enableHover": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable hover tooltips for tracepoints"
+        }
+      }
+    }
+  },
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "lint": "eslint src --ext .ts",
+    "test": "vitest"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "@types/vscode": "^1.85.0",
+    "@typescript-eslint/eslint-plugin": "^7.0.0",
+    "@typescript-eslint/parser": "^7.0.0",
+    "eslint": "^8.56.0",
+    "typescript": "^5.3.0",
+    "vite": "^5.0.0",
+    "vitest": "^1.0.0"
+  }
+}

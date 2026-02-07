@@ -1,0 +1,108 @@
+{
+  "$schema": "../../src/config.schema.json",
+  "version": "1.0",
+  "projectId": "nextjs-example",
+  "environment": "development",
+  "tracepoints": [
+    {
+      "id": "tp-getProducts",
+      "filePath": "lib/data.ts",
+      "type": "entry",
+      "functionName": "getProducts",
+      "enabled": true,
+      "code": "__trace__('getProducts-entry', { timestamp: Date.now() })",
+      "description": "Trace getProducts function entry"
+    },
+    {
+      "id": "tp-getProducts-exit",
+      "filePath": "lib/data.ts",
+      "type": "exit",
+      "functionName": "getProducts",
+      "enabled": true,
+      "code": "__trace__('getProducts-exit', { result: __returnValue__, count: __returnValue__?.length })",
+      "description": "Trace getProducts function exit with result"
+    },
+    {
+      "id": "tp-getStats",
+      "filePath": "lib/data.ts",
+      "type": "entry",
+      "functionName": "getStats",
+      "enabled": true,
+      "code": "__trace__('getStats-entry', {})",
+      "description": "Trace getStats function entry"
+    },
+    {
+      "id": "tp-getStats-exit",
+      "filePath": "lib/data.ts",
+      "type": "exit",
+      "functionName": "getStats",
+      "enabled": true,
+      "code": "__trace__('getStats-exit', { stats: __returnValue__ })",
+      "description": "Trace getStats function exit with result"
+    },
+    {
+      "id": "tp-searchProducts",
+      "filePath": "lib/data.ts",
+      "type": "entry",
+      "functionName": "searchProducts",
+      "enabled": true,
+      "code": "__trace__('searchProducts-entry', { query })",
+      "description": "Trace searchProducts with query parameter"
+    },
+    {
+      "id": "tp-searchProducts-exit",
+      "filePath": "lib/data.ts",
+      "type": "exit",
+      "functionName": "searchProducts",
+      "enabled": true,
+      "code": "__trace__('searchProducts-exit', { query, resultCount: __returnValue__?.length })",
+      "description": "Trace searchProducts results"
+    },
+    {
+      "id": "tp-updateStock",
+      "filePath": "lib/data.ts",
+      "type": "entry",
+      "functionName": "updateStock",
+      "enabled": true,
+      "code": "__trace__('updateStock-entry', { productId, quantity })",
+      "description": "Trace stock update with parameters"
+    },
+    {
+      "id": "tp-updateStock-after",
+      "filePath": "lib/data.ts",
+      "type": "after",
+      "lineNumber": 109,
+      "enabled": true,
+      "code": "__trace__('updateStock-result', { productId, previousStock, newStock, quantity })",
+      "description": "Trace stock update result"
+    },
+    {
+      "id": "tp-api-search",
+      "filePath": "app/api/search/route.ts",
+      "type": "entry",
+      "functionName": "GET",
+      "enabled": true,
+      "code": "__trace__('api-search-entry', {})",
+      "description": "Trace search API entry"
+    },
+    {
+      "id": "tp-api-demo",
+      "filePath": "app/api/demo-trace/route.ts",
+      "type": "entry",
+      "functionName": "POST",
+      "enabled": true,
+      "code": "__trace__('api-demo-entry', {})",
+      "description": "Trace demo API entry"
+    }
+  ],
+  "capture": {
+    "maxDepth": 3,
+    "maxArrayLength": 50,
+    "maxCaptureSize": 10240,
+    "sensitivePatterns": ["password", "secret", "token", "key", "auth", "apiKey"]
+  },
+  "redaction": {
+    "enabled": true,
+    "placeholder": "[REDACTED]"
+  }
+}

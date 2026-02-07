@@ -1,0 +1,512 @@
+{
+  "name": "TraceInject - Build-Time Dynamic Instrumentation for TypeScript",
+  "description": "**Project Name:** TraceInject  \n**Version:** 1.0.0  \n**Author:** Alex  \n**Date:** January 15, 2026",
+  "branchName": "feature/traceinject-build-time-dynamic-instrumentation-for-typescript",
+  "userStories": [
+    {
+      "id": "US-001",
+      "title": "TypeScript AST Parser Setup",
+      "description": "TypeScript AST Parser Setup",
+      "acceptanceCriteria": [
+        "Use `@babel/parser` with TypeScript preset for parsing",
+        "Support JSX/TSX syntax",
+        "Support decorators (legacy and stage 3)",
+        "Handle all ES2024+ features",
+        "Parse source maps for accurate line mapping",
+        "Unit tests for edge cases (decorators, generics, type assertions)"
+      ],
+      "priority": 1,
+      "passes": false,
+      "labels": [],
+      "dependsOn": []
+    },
+    {
+      "id": "US-002",
+      "title": "Tracepoint Injection Logic",
+      "description": "Tracepoint Injection Logic",
+      "acceptanceCriteria": [
+        "Inject tracepoint calls before specified line numbers",
+        "Inject tracepoint calls after specified line numbers",
+        "Inject tracepoint calls at function entry/exit",
+        "Preserve original source maps",
+        "Generate new source maps with injected code",
+        "Handle async/await functions correctly",
+        "Handle generator functions correctly"
+      ],
+      "priority": 2,
+      "passes": false,
+      "labels": [],
+      "dependsOn": []
+    },
+    {
+      "id": "US-003",
+      "title": "Variable Capture Mechanism",
+      "description": "Variable Capture Mechanism",
+      "acceptanceCriteria": [
+        "Capture primitive values (string, number, boolean, null, undefined)",
+        "Capture object references with configurable depth (default: 2)",
+        "Capture array contents with configurable length limit (default: 100)",
+        "Handle circular references gracefully",
+        "Redact sensitive fields (configurable patterns: password, secret, token, etc.)",
+        "Support BigInt, Symbol, Date serialization",
+        "Capture `this` context when specified",
+        "Max capture size limit (default: 10KB per tracepoint)"
+      ],
+      "priority": 3,
+      "passes": false,
+      "labels": [],
+      "dependsOn": []
+    },
+    {
+      "id": "US-004",
+      "title": "Expression Evaluation Support",
+      "description": "Expression Evaluation Support",
+      "acceptanceCriteria": [
+        "Support property access expressions (`user.profile.name`)",
+        "Support array indexing (`items[0]`)",
+        "Support method calls with no side effects (`obj.getId()`)",
+        "Support template literals for dynamic expressions",
+        "Validate expressions at build time for safety",
+        "Reject expressions with side effects (assignments, increments)"
+      ],
+      "priority": 4,
+      "passes": false,
+      "labels": [],
+      "dependsOn": []
+    },
+    {
+      "id": "US-005",
+      "title": "Local Configuration File Support",
+      "description": "Local Configuration File Support",
+      "acceptanceCriteria": [
+        "Support `traceinject.config.json` at project root",
+        "Support `traceinject.config.ts` with type safety",
+        "Support `traceinject.config.yaml` for YAML preference",
+        "Validate configuration schema at build time",
+        "Provide helpful error messages for invalid configs",
+        "Support glob patterns for file matching",
+        "Support environment-specific configs (`traceinject.config.production.json`)"
+      ],
+      "priority": 4,
+      "passes": false,
+      "labels": [],
+      "dependsOn": []
+    },
+    {
+      "id": "US-006",
+      "title": "Remote Configuration Fetching",
+      "description": "Remote Configuration Fetching",
+      "acceptanceCriteria": [
+        "Fetch config from HTTP/HTTPS endpoint at build time",
+        "Support API key authentication (header-based)",
+        "Support OAuth2/JWT authentication",
+        "Cache remote config locally with TTL",
+        "Fallback to cached config on network failure",
+        "Merge remote config with local config (remote takes precedence)",
+        "Validate remote config schema",
+        "Log config fetch status and version"
+      ],
+      "priority": 4,
+      "passes": false,
+      "labels": [],
+      "dependsOn": []
+    },
+    {
+      "id": "US-007",
+      "title": "Runtime Config Checking (Hybrid Mode)",
+      "description": "Runtime Config Checking (Hybrid Mode)",
+      "acceptanceCriteria": [
+        "Inject lightweight config checker at tracepoint sites",
+        "Poll remote server for config changes (configurable interval)",
+        "Cache config in memory with TTL",
+        "Support tracepoint enable/disable without code changes",
+        "Support sample rate changes without rebuild",
+        "Minimal performance overhead (<1ms per check with caching)",
+        "Graceful degradation on network failures"
+      ],
+      "priority": 4,
+      "passes": false,
+      "labels": [],
+      "dependsOn": []
+    },
+    {
+      "id": "US-008",
+      "title": "Webpack Plugin",
+      "description": "Webpack Plugin",
+      "acceptanceCriteria": [
+        "Create `@trace-inject/webpack` package",
+        "Integrate as Webpack loader for `.ts`/`.tsx` files",
+        "Support Webpack 4.x and 5.x",
+        "Preserve existing source maps",
+        "Work with `ts-loader` and `babel-loader`",
+        "Support watch mode with incremental transforms",
+        "Provide Webpack-specific configuration options",
+        "Document integration with common Webpack setups"
+      ],
+      "priority": 4,
+      "passes": false,
+      "labels": [],
+      "dependsOn": []
+    },
+    {
+      "id": "US-009",
+      "title": "Vite Plugin",
+      "description": "Vite Plugin",
+      "acceptanceCriteria": [
+        "Create `@trace-inject/vite` package",
+        "Implement as Vite transform plugin",
+        "Support dev server with HMR",
+        "Support production builds",
+        "Work with `vite-plugin-react` and `vite-plugin-vue`",
+        "Preserve source maps in dev and prod",
+        "Support Vite 4.x and 5.x"
+      ],
+      "priority": 4,
+      "passes": false,
+      "labels": [],
+      "dependsOn": []
+    },
+    {
+      "id": "US-010",
+      "title": "esbuild Plugin",
+      "description": "esbuild Plugin",
+      "acceptanceCriteria": [
+        "Create `@trace-inject/esbuild` package",
+        "Implement as esbuild onLoad plugin",
+        "Maintain esbuild's speed (< 10% overhead)",
+        "Support bundle and transform modes",
+        "Work with esbuild's native TypeScript handling",
+        "Support sourcemap generation"
+      ],
+      "priority": 4,
+      "passes": false,
+      "labels": [],
+      "dependsOn": []
+    },
+    {
+      "id": "US-011",
+      "title": "Rollup Plugin",
+      "description": "Rollup Plugin",
+      "acceptanceCriteria": [
+        "Create `@trace-inject/rollup` package",
+        "Implement as Rollup transform plugin",
+        "Support Rollup 3.x and 4.x",
+        "Work alongside `@rollup/plugin-typescript`",
+        "Preserve source maps through plugin chain",
+        "Support code splitting"
+      ],
+      "priority": 4,
+      "passes": false,
+      "labels": [],
+      "dependsOn": []
+    },
+    {
+      "id": "US-012",
+      "title": "TypeScript Compiler Plugin (tsc)",
+      "description": "TypeScript Compiler Plugin (tsc)",
+      "acceptanceCriteria": [
+        "Create `@trace-inject/typescript` package",
+        "Implement as TypeScript custom transformer",
+        "Support `ttypescript` / `ts-patch` integration",
+        "Work with `tsconfig.json` configuration",
+        "Support project references",
+        "Document setup with various TypeScript configurations"
+      ],
+      "priority": 4,
+      "passes": false,
+      "labels": [],
+      "dependsOn": []
+    },
+    {
+      "id": "US-013",
+      "title": "SWC Plugin",
+      "description": "SWC Plugin",
+      "acceptanceCriteria": [
+        "Create `@trace-inject/swc` package (Rust or WASM)",
+        "Implement as SWC transform plugin",
+        "Maintain SWC's performance characteristics",
+        "Support `.swcrc` configuration",
+        "Work with SWC's TypeScript handling"
+      ],
+      "priority": 4,
+      "passes": false,
+      "labels": [],
+      "dependsOn": []
+    },
+    {
+      "id": "US-014",
+      "title": "Next.js Integration",
+      "description": "Next.js Integration",
+      "acceptanceCriteria": [
+        "Create `@trace-inject/next` package",
+        "Support App Router and Pages Router",
+        "Work with Next.js 13, 14, and 15",
+        "Support Server Components instrumentation",
+        "Support Client Components instrumentation",
+        "Support API Routes instrumentation",
+        "Support Middleware instrumentation",
+        "Work with Turbopack (Next.js 15+)",
+        "Handle Server Actions correctly",
+        "Document RSC-specific considerations"
+      ],
+      "priority": 4,
+      "passes": false,
+      "labels": [],
+      "dependsOn": []
+    },
+    {
+      "id": "US-015",
+      "title": "Hono Integration",
+      "description": "Hono Integration",
+      "acceptanceCriteria": [
+        "Create `@trace-inject/hono` package",
+        "Support Cloudflare Workers runtime",
+        "Support Deno Deploy runtime",
+        "Support Bun runtime",
+        "Support Node.js runtime",
+        "Provide Hono middleware for trace context propagation",
+        "Document edge-specific capture limitations"
+      ],
+      "priority": 4,
+      "passes": false,
+      "labels": [],
+      "dependsOn": []
+    },
+    {
+      "id": "US-016",
+      "title": "Remix Integration",
+      "description": "Remix Integration",
+      "acceptanceCriteria": [
+        "Create `@trace-inject/remix` package",
+        "Support Remix 2.x with Vite",
+        "Support loader/action instrumentation",
+        "Support client-side route instrumentation",
+        "Handle streaming responses correctly"
+      ],
+      "priority": 4,
+      "passes": false,
+      "labels": [],
+      "dependsOn": []
+    },
+    {
+      "id": "US-017",
+      "title": "Express/Fastify/Koa Integration",
+      "description": "Express/Fastify/Koa Integration",
+      "acceptanceCriteria": [
+        "Create `@trace-inject/node` package with middleware",
+        "Provide Express middleware for trace context",
+        "Provide Fastify plugin for trace context",
+        "Provide Koa middleware for trace context",
+        "Support request-scoped tracing",
+        "Propagate trace context through async operations"
+      ],
+      "priority": 4,
+      "passes": false,
+      "labels": [],
+      "dependsOn": []
+    },
+    {
+      "id": "US-018",
+      "title": "AWS Lambda Integration",
+      "description": "AWS Lambda Integration",
+      "acceptanceCriteria": [
+        "Create `@trace-inject/lambda` package",
+        "Provide Lambda handler wrapper",
+        "Buffer traces and flush before timeout",
+        "Support Lambda Extensions for async export",
+        "Handle cold start tracing",
+        "Support Lambda@Edge",
+        "Support API Gateway context propagation"
+      ],
+      "priority": 4,
+      "passes": false,
+      "labels": [],
+      "dependsOn": []
+    },
+    {
+      "id": "US-019",
+      "title": "Lightweight Runtime Library",
+      "description": "Lightweight Runtime Library",
+      "acceptanceCriteria": [
+        "Create `@trace-inject/runtime` package",
+        "Bundle size < 5KB minified + gzipped",
+        "Zero external dependencies",
+        "Support tree-shaking for unused features",
+        "Async/non-blocking trace processing",
+        "Memory-bounded buffer (configurable max)",
+        "Graceful degradation on errors"
+      ],
+      "priority": 4,
+      "passes": false,
+      "labels": [],
+      "dependsOn": []
+    },
+    {
+      "id": "US-020",
+      "title": "Trace Batching and Export",
+      "description": "Trace Batching and Export",
+      "acceptanceCriteria": [
+        "Batch traces in memory (configurable batch size)",
+        "Flush on batch size threshold",
+        "Flush on time interval (configurable)",
+        "Flush on process exit (beforeExit, SIGTERM)",
+        "Support HTTP POST export",
+        "Support console.log export (dev mode)",
+        "Support file export (debugging)",
+        "Support custom export handlers",
+        "Retry failed exports with exponential backoff",
+        "Drop oldest traces on buffer overflow"
+      ],
+      "priority": 4,
+      "passes": false,
+      "labels": [],
+      "dependsOn": []
+    },
+    {
+      "id": "US-021",
+      "title": "Performance Safeguards",
+      "description": "Performance Safeguards",
+      "acceptanceCriteria": [
+        "Sampling support (0-100% configurable per tracepoint)",
+        "Rate limiting (max traces per second)",
+        "Circuit breaker on export failures",
+        "Async capture processing (off main thread where possible)",
+        "Capture timeout (abort if serialization takes too long)",
+        "Memory usage monitoring and auto-throttling",
+        "Performance benchmarks in CI"
+      ],
+      "priority": 4,
+      "passes": false,
+      "labels": [],
+      "dependsOn": []
+    },
+    {
+      "id": "US-022",
+      "title": "CLI Tool",
+      "description": "CLI Tool",
+      "acceptanceCriteria": [
+        "Create `trace-inject` CLI package",
+        "`trace-inject init` - Initialize config file",
+        "`trace-inject validate` - Validate config",
+        "`trace-inject list` - List configured tracepoints",
+        "`trace-inject add` - Add tracepoint interactively",
+        "`trace-inject remove` - Remove tracepoint",
+        "`trace-inject test` - Dry-run transformation",
+        "`trace-inject sync` - Sync with remote config"
+      ],
+      "priority": 4,
+      "passes": false,
+      "labels": [],
+      "dependsOn": []
+    },
+    {
+      "id": "US-023",
+      "title": "VS Code Extension",
+      "description": "VS Code Extension",
+      "acceptanceCriteria": [
+        "Create `trace-inject-vscode` extension",
+        "Show gutter icons for active tracepoints",
+        "Click gutter to add/remove tracepoint",
+        "Hover to see tracepoint config",
+        "CodeLens showing captured variables",
+        "Command palette integration",
+        "Sync with config file changes"
+      ],
+      "priority": 4,
+      "passes": false,
+      "labels": [],
+      "dependsOn": []
+    },
+    {
+      "id": "US-024",
+      "title": "TypeScript Type Definitions",
+      "description": "TypeScript Type Definitions",
+      "acceptanceCriteria": [
+        "Export all config types from main package",
+        "Provide `defineConfig` helper with autocomplete",
+        "Type-check capture expressions where possible",
+        "Generate types from JSON schema"
+      ],
+      "priority": 4,
+      "passes": false,
+      "labels": [],
+      "dependsOn": []
+    },
+    {
+      "id": "US-025",
+      "title": "Documentation Site",
+      "description": "Documentation Site",
+      "acceptanceCriteria": [
+        "Create documentation site (VitePress/Docusaurus)",
+        "Getting started guide",
+        "Configuration reference",
+        "Plugin-specific guides (Webpack, Vite, etc.)",
+        "Framework-specific guides (Next.js, Hono, etc.)",
+        "API reference",
+        "Troubleshooting guide",
+        "Performance best practices",
+        "Security considerations"
+      ],
+      "priority": 4,
+      "passes": false,
+      "labels": [],
+      "dependsOn": []
+    },
+    {
+      "id": "US-026",
+      "title": "Config Management API",
+      "description": "Config Management API",
+      "acceptanceCriteria": [
+        "REST API for CRUD operations on tracepoints",
+        "Project/environment scoping",
+        "API key management",
+        "Audit logging for config changes",
+        "Config versioning and rollback",
+        "Bulk import/export"
+      ],
+      "priority": 4,
+      "passes": false,
+      "labels": [],
+      "dependsOn": []
+    },
+    {
+      "id": "US-027",
+      "title": "Trace Ingestion API",
+      "description": "Trace Ingestion API",
+      "acceptanceCriteria": [
+        "HTTP endpoint for trace ingestion",
+        "Support batch trace submission",
+        "API key authentication",
+        "Rate limiting per project",
+        "Data validation",
+        "Forward to storage backend (ClickHouse, PostgreSQL, etc.)"
+      ],
+      "priority": 4,
+      "passes": false,
+      "labels": [],
+      "dependsOn": []
+    },
+    {
+      "id": "US-028",
+      "title": "Basic Web UI",
+      "description": "Basic Web UI",
+      "acceptanceCriteria": [
+        "Dashboard showing recent traces",
+        "Trace detail view with captured variables",
+        "Config editor with validation",
+        "Project/environment selector",
+        "Search and filter traces",
+        "Export traces"
+      ],
+      "priority": 4,
+      "passes": false,
+      "labels": [],
+      "dependsOn": []
+    }
+  ],
+  "metadata": {
+    "createdAt": "2026-01-15T18:28:21.628Z",
+    "version": "1.0.0",
+    "updatedAt": "2026-01-15T18:29:51.628Z"
+  }
+}
