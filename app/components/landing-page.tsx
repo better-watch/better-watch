@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { ThemeToggle } from "@/components/theme-toggle";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -10,9 +11,9 @@ import {
 
 function LandingHeader() {
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 border-b border-border-color/60 bg-app-bg/80 backdrop-blur-md">
-      <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-6">
-        <Link href="/landing" className="text-xl font-medium tracking-tight">
+    <header className="fixed top-0 left-0 right-0 z-50 bg-app-bg/80 backdrop-blur-md">
+      <div className="flex h-16 items-center justify-between px-6">
+        <Link href="/landing" className="font-alliance text-xl font-medium tracking-tight">
           Better Watch
         </Link>
         <nav className="flex items-center gap-4">
@@ -22,20 +23,45 @@ function LandingHeader() {
           >
             Open App
           </Link>
+          <ThemeToggle />
           <Button asChild size="sm">
             <Link href="/chat">Get Started</Link>
           </Button>
         </nav>
+      </div>
+      <div className="px-6 pb-2 text-faded/30 overflow-hidden whitespace-nowrap select-none pointer-events-none">
+        {"-".repeat(300)}
       </div>
     </header>
   );
 }
 
 function HeroSection() {
+  const asciiArt = `
+    010101010101010101010101010101010101010101010101010101010101
+    101010101010101010101010101010101010101010101010101010101010
+    010101010101010101010101010101010101010101010101010101010101
+    101010101010101010101010101010101010101010101010101010101010
+    DETECT ANOMALY DETECT ANOMALY DETECT ANOMALY DETECT ANOMALY 
+    DIAGNOSE ROOT CAUSE DIAGNOSE ROOT CAUSE DIAGNOSE ROOT CAUSE
+    APPLY RUNTIME PATCH APPLY RUNTIME PATCH APPLY RUNTIME PATCH
+    010101010101010101010101010101010101010101010101010101010101
+    101010101010101010101010101010101010101010101010101010101010
+    010101010101010101010101010101010101010101010101010101010101
+    101010101010101010101010101010101010101010101010101010101010
+  `;
+
   return (
     <section className="relative overflow-hidden px-6 pb-24 pt-40 md:pt-48">
-      <div className="mx-auto max-w-4xl text-center">
-        <h1 className="text-4xl font-medium tracking-tight text-heading sm:text-5xl md:text-6xl">
+      {/* ASCII Background */}
+      <div className="absolute inset-0 z-0 flex items-center justify-center opacity-[0.03] select-none pointer-events-none overflow-hidden h-[120%] -top-[10%]">
+        <pre className="font-mono text-[10px] sm:text-sm leading-tight text-center whitespace-pre transform -rotate-12 scale-150">
+          {asciiArt.repeat(10)}
+        </pre>
+      </div>
+
+      <div className="relative z-10 mx-auto max-w-4xl text-center">
+        <h1 className="font-alliance text-4xl font-medium tracking-tight text-heading sm:text-5xl md:text-6xl text-balance">
           Detect, patch, and fix
           <br />
           <span className="text-chart-1">production issues in runtime</span>
