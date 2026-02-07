@@ -44,7 +44,7 @@ function PureChatHeader({
         className="order-3 h-8 px-2 md:ml-auto md:h-fit md:px-2"
         variant="outline"
       >
-        <Link href="/events">
+        <Link href="/timeline">
           <ClockIcon size={16} />
           <span className="md:sr-only">Audit Log</span>
         </Link>

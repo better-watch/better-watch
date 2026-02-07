@@ -1,12 +1,12 @@
-import { TimeMachine } from '../components/time-machine';
-import { mockSREEvents } from '@/lib/sre-events';
-import { EventsHeader } from './events-header';
+import { EventList } from "./event-list";
+import { mockSREEvents } from "@/lib/sre-events";
+import { EventsNewHeader } from "./events-header";
 
-export default function Home() {
+export default function EventsPage() {
   return (
     <div className="relative min-h-screen">
-      <EventsHeader />
-      <TimeMachine events={mockSREEvents} />
+      <EventsNewHeader />
+      <EventList events={mockSREEvents} />
     </div>
   );
 }

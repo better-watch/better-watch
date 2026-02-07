@@ -104,6 +104,17 @@ export type ArtifactMap = {
   [ArtifactType.Timeline]: TimelineData;
 };
 
+export type Repo = {
+  url: string;
+  branch?: string;
+  commit?: string;
+  pr?: {
+    url: string;
+    id: string;
+    title: string;
+  };
+};
+
 // ── SREEvent — discriminated union on artifactType ↔ artifactData ────────────
 
 export type SREEvent = {
@@ -117,10 +128,15 @@ export type SREEvent = {
     service: string;
     artifactType: K;
     artifactData: ArtifactMap[K];
+    repo?: Repo;
   };
 }[ArtifactType];
 
 // ── Helpers ──────────────────────────────────────────────────────────────────
+
+export function getEventById(id: string): SREEvent | undefined {
+  return mockSREEvents.find((e) => e.id === id);
+}
 
 function hoursAgo(h: number): string {
   const d = new Date();
@@ -148,6 +164,15 @@ export const mockSREEvents: SREEvent[] = [
         12100, 12350, 12200, 12400, 12300, 12100, 12250, 12400,
       ],
       anomalyRange: [5, 19],
+    },
+    repo: {
+      url: "https://github.com/betterwatch/api-gateway",
+      branch: "fix/ddos-rate-limit",
+      pr: {
+        url: "https://github.com/betterwatch/api-gateway/pull/142",
+        id: "142",
+        title: "Add rate limit for abusive IP range 198.51.100.0/24",
+      },
     },
   },
   // ─── 1 h ago ───────────────────────────────────────────────────────────────
@@ -187,6 +212,10 @@ export const mockSREEvents: SREEvent[] = [
         "now",
       ],
     },
+    repo: {
+      url: "https://github.com/betterwatch/checkout-service",
+      branch: "main",
+    },
   },
   // ─── 2 h ago ───────────────────────────────────────────────────────────────
   {
@@ -208,6 +237,9 @@ export const mockSREEvents: SREEvent[] = [
         { label: "/api/search", value: 2, color: "#22c55e" },
         { label: "/api/health", value: 0, color: "#6b7280" },
       ],
+    },
+    repo: {
+      url: "https://github.com/betterwatch/api-gateway",
     },
   },
   // ─── 3 h ago ───────────────────────────────────────────────────────────────
@@ -280,6 +312,16 @@ export const mockSREEvents: SREEvent[] = [
         { from: "cs", to: "ps" },
         { from: "ps", to: "sa" },
       ],
+    },
+    repo: {
+      url: "https://github.com/betterwatch/payments-service",
+      branch: "fix/stripe-timeout-circuit-breaker",
+      commit: "a1b2c3d",
+      pr: {
+        url: "https://github.com/betterwatch/payments-service/pull/89",
+        id: "89",
+        title: "Reduce timeout 30s→5s, enable circuit breaker",
+      },
     },
   },
   // ─── 5 h ago ───────────────────────────────────────────────────────────────
@@ -443,6 +485,15 @@ export const mockSREEvents: SREEvent[] = [
         { type: "added", content: "  reset_timeout_ms: 30000" },
       ],
     },
+    repo: {
+      url: "https://github.com/betterwatch/payments-service",
+      branch: "fix/timeout-rollback",
+      pr: {
+        url: "https://github.com/betterwatch/payments-service/pull/90",
+        id: "90",
+        title: "Config: timeout 30s→5s, enable circuit breaker",
+      },
+    },
   },
   // ─── 7 h ago ───────────────────────────────────────────────────────────────
   {
@@ -592,6 +643,16 @@ export const mockSREEvents: SREEvent[] = [
         { label: "v2.13.9 (stable)", value: 95, color: "#3b82f6" },
         { label: "v2.14.0 (canary)", value: 5, color: "#f59e0b" },
       ],
+    },
+    repo: {
+      url: "https://github.com/betterwatch/checkout-service",
+      branch: "release/v2.14.0",
+      commit: "f7e8d9c",
+      pr: {
+        url: "https://github.com/betterwatch/checkout-service/pull/256",
+        id: "256",
+        title: "Release v2.14.0 — canary rollout",
+      },
     },
   },
   // ─── 14 h ago ──────────────────────────────────────────────────────────────
