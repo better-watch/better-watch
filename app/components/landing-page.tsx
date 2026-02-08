@@ -1,6 +1,10 @@
+"use client";
+
 import Link from "next/link";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { Button } from "@/components/ui/button";
+import { motion, AnimatePresence } from "framer-motion";
+import { Search, Bandage, Check } from "lucide-react";
 import {
   Card,
   CardContent,
@@ -36,6 +40,37 @@ function LandingHeader() {
   );
 }
 
+function InteractiveHoverWord({
+  word,
+  icon: Icon,
+  className
+}: {
+  word: string;
+  icon: any;
+  className?: string;
+}) {
+  return (
+    <motion.span
+      className={`relative inline-flex items-center gap-1 font-bold cursor-default group ${className}`}
+      whileHover="hover"
+    >
+      <span>{word}</span>
+      <div className="relative w-0 group-hover:w-5 overflow-hidden transition-all duration-300 ease-out">
+        <motion.div
+          variants={{
+            initial: { opacity: 0, scale: 0, x: -5 },
+            hover: { opacity: 1, scale: 1, x: 0 }
+          }}
+          transition={{ type: "spring", stiffness: 300, damping: 20 }}
+          className="flex items-center"
+        >
+          <Icon className="h-4 w-4 text-chart-1 shrink-0" />
+        </motion.div>
+      </div>
+    </motion.span>
+  );
+}
+
 function HeroSection() {
   const asciiArt = `
     010101010101010101010101010101010101010101010101010101010101
@@ -62,7 +97,9 @@ function HeroSection() {
 
       <div className="relative z-10 mx-auto max-w-4xl text-center">
         <h1 className="font-alliance text-4xl font-medium tracking-tight text-heading sm:text-5xl md:text-6xl text-balance">
-          Detect, patch, and fix
+          <InteractiveHoverWord word="Detect" icon={Search} />,{" "}
+          <InteractiveHoverWord word="patch" icon={Bandage} />, and{" "}
+          <InteractiveHoverWord word="fix" icon={Check} />
           <br />
           <span className="text-chart-1">production issues in runtime</span>
         </h1>
