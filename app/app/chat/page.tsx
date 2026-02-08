@@ -19,7 +19,7 @@ async function NewChatPage() {
   const session = await auth();
 
   if (!session) {
-    redirect("/api/auth/guest");
+    redirect("/login");
   }
 
   const cookieStore = await cookies();
@@ -34,7 +34,6 @@ async function NewChatPage() {
           id={id}
           initialChatModel={DEFAULT_CHAT_MODEL}
           initialMessages={[]}
-
           isReadonly={false}
           key={id}
         />
