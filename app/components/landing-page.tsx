@@ -261,6 +261,18 @@ function HowItWorksSection() {
             </ScrollReveal>
           ))}
         </div>
+        <ScrollReveal delay={0.3}>
+          <div className="mt-16 overflow-hidden rounded-xl border border-border-color/60 shadow-lg">
+            <Image
+              src="/demo.gif"
+              alt="Demo showing how Better Watch detects, patches, and fixes issues"
+              width={1200}
+              height={675}
+              className="w-full"
+              unoptimized
+            />
+          </div>
+        </ScrollReveal>
       </div>
     </section>
   );
