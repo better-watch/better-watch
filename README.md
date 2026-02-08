@@ -50,6 +50,19 @@ npm install
 npm run build
 ```
 
+## Built With
+
+- [Anthropic Claude](https://anthropic.com) -- AI-powered analysis and code generation
+- [Next.js](https://nextjs.org) -- React framework
+- [Vercel](https://vercel.com) -- Deployment and infrastructure
+- [v0](https://v0.dev) -- AI-powered UI generation
+
+## Sponsors
+
+- [Neon](https://neon.tech) -- Serverless Postgres
+- [Vercel](https://vercel.com) -- Cloud platform
+- [better-auth](https://better-auth.com) -- Authentication framework
+
 ## Learn More
 
 - [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
