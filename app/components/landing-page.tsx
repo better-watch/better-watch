@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { Button } from "@/components/ui/button";
 import { motion, AnimatePresence } from "framer-motion";
@@ -106,7 +107,7 @@ function HeroSection() {
         <p className="mx-auto mt-8 max-w-2xl text-lg text-subtitle">
           An intelligent observability and analytics agent that automatically
           detects, diagnoses, and patches production issues at runtime. No
-          waiting for PR approval or the next deploy.
+          waiting for the next deploy.
         </p>
         <div className="mt-12 flex flex-col items-center justify-center gap-4 sm:flex-row">
           <Button asChild size="lg" className="w-full sm:w-auto">
@@ -145,6 +146,30 @@ function SectionDivider() {
     <div className="px-6 py-4 text-faded/20 overflow-hidden whitespace-nowrap select-none pointer-events-none">
       {"-".repeat(300)}
     </div>
+  );
+}
+
+function ArchitectureSection() {
+  return (
+    <section className="px-6 pb-24">
+      <div className="mx-auto max-w-5xl">
+        <ScrollReveal>
+          <div className="overflow-hidden rounded-xl border border-border-color/60 bg-white shadow-lg dark:bg-zinc-900">
+            <Image
+              src="/SCR-20260207-ojcs.png"
+              alt="Better Watch architecture — services connect to the Better Watch agent which exports wide events to Sentry, Clickhouse, and OpenTelemetry"
+              width={1920}
+              height={1080}
+              className="w-full h-auto"
+              priority
+            />
+          </div>
+          <p className="mt-4 text-center text-sm text-faded">
+            No code changes. No redeploys. Near-zero overhead.
+          </p>
+        </ScrollReveal>
+      </div>
+    </section>
   );
 }
 
@@ -236,6 +261,39 @@ function HowItWorksSection() {
             </ScrollReveal>
           ))}
         </div>
+      </div>
+    </section>
+  );
+}
+
+function DataFlowSection() {
+  return (
+    <section className="border-t border-border-color/60 bg-warm-cream/50 px-6 py-24 dark:bg-warm-cream/20">
+      <div className="mx-auto max-w-6xl">
+        <ScrollReveal>
+          <p className="text-sm font-bold uppercase tracking-[0.2em] text-chart-2">
+            Under the hood
+          </p>
+          <h2 className="mt-4 font-alliance text-3xl font-bold tracking-tight text-heading sm:text-4xl">
+            From probe config to rich, wide events
+          </h2>
+          <p className="mt-6 max-w-2xl text-lg leading-relaxed text-subtitle">
+            The agent publishes probe configurations to your services. The SDK
+            captures events at runtime and sends them back. The agent merges,
+            enriches, and exports them as wide events — ready for analysis.
+          </p>
+        </ScrollReveal>
+        <ScrollReveal delay={0.15}>
+          <div className="mt-12 overflow-hidden rounded-xl border border-border-color/60 bg-white shadow-lg dark:bg-zinc-900">
+            <Image
+              src="/SCR-20260207-ojek.png"
+              alt="Data flow — probe config is published, SDK captures probe events at runtime, agent merges them into rich wide events"
+              width={1920}
+              height={1080}
+              className="w-full h-auto"
+            />
+          </div>
+        </ScrollReveal>
       </div>
     </section>
   );
@@ -364,10 +422,12 @@ export function LandingPage() {
       <LandingHeader />
       <main>
         <HeroSection />
+        <ArchitectureSection />
         <SectionDivider />
         <ProblemSection />
         <SectionDivider />
         <HowItWorksSection />
+        <DataFlowSection />
         <SectionDivider />
         <KeyInsightSection />
         <SectionDivider />
