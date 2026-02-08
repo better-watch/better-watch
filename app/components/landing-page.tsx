@@ -309,7 +309,7 @@ function KeyInsightSection() {
           </p>
           <h2 className="mt-4 font-alliance text-3xl font-bold tracking-tight text-heading sm:text-4xl">
             The agent decides{" "}
-            <span className="text-chart-1">what to observe and what to fix</span>
+            <span className="text-chart-1">what to observe</span>
           </h2>
           <p className="mt-8 text-xl leading-relaxed text-foreground font-medium">
             It learns your application, identifies issues, and applies patches
