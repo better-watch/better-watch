@@ -42,10 +42,10 @@ function PureChatHeader({
       )}
 
 
-      <div className="flex items-center gap-2">
+      <div className="ml-auto flex items-center gap-2">
         <Button
           asChild
-          className="order-3 h-8 px-2 md:ml-auto md:h-fit md:px-2"
+          className="h-8 px-2 md:ml-auto md:h-fit md:px-2"
           variant="outline"
         >
           <Link href="/events">
@@ -56,7 +56,7 @@ function PureChatHeader({
 
         <Button
           asChild
-          className="order-3 h-8 px-2 md:ml-auto md:h-fit md:px-2"
+          className="h-8 px-2 md:ml-auto md:h-fit md:px-2"
           variant="outline"
         >
           <Link href="/timeline">
@@ -64,8 +64,8 @@ function PureChatHeader({
             <span className="md:sr-only">Timeline</span>
           </Link>
         </Button>
+        <ThemeToggle />
       </div>
-      <ThemeToggle />
     </header>
   );
 }
