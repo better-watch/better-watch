@@ -76,6 +76,7 @@ export function Chat({
     regenerate,
     resumeStream,
     addToolApprovalResponse,
+    error,
   } = useChat<ChatMessage>({
     id,
     messages: initialMessages,
@@ -201,6 +202,7 @@ export function Chat({
             <MultimodalInput
               attachments={attachments}
               chatId={id}
+              error={error}
               input={input}
               messages={messages}
               onModelChange={setCurrentModelId}
@@ -221,6 +223,7 @@ export function Chat({
         addToolApprovalResponse={addToolApprovalResponse}
         attachments={attachments}
         chatId={id}
+        error={error}
         input={input}
         isReadonly={isReadonly}
         messages={messages}

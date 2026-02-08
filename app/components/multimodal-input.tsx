@@ -67,6 +67,7 @@ function PureMultimodalInput({
   selectedVisibilityType,
   selectedModelId,
   onModelChange,
+  error,
 }: {
   chatId: string;
   input: string;
@@ -82,9 +83,43 @@ function PureMultimodalInput({
   selectedVisibilityType: VisibilityType;
   selectedModelId: string;
   onModelChange?: (modelId: string) => void;
+  error: Error | undefined;
 }) {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const { width } = useWindowSize();
+
+  const [activeGlow, setActiveGlow] = useState<
+    "error" | "fixing" | "success" | null
+  >(null);
+  const successTimerRef = useRef<NodeJS.Timeout | null>(null);
+
+  useEffect(() => {
+    if (error) {
+      setActiveGlow("error");
+      if (successTimerRef.current) clearTimeout(successTimerRef.current);
+      return;
+    }
+
+    if (status === "submitted" || status === "streaming") {
+      setActiveGlow("fixing");
+      if (successTimerRef.current) clearTimeout(successTimerRef.current);
+      return;
+    }
+
+    if (status === "ready") {
+      if (activeGlow === "fixing") {
+        setActiveGlow("success");
+        if (successTimerRef.current) clearTimeout(successTimerRef.current);
+        successTimerRef.current = setTimeout(() => {
+          setActiveGlow(null);
+        }, 10000);
+      }
+    }
+
+    return () => {
+      if (successTimerRef.current) clearTimeout(successTimerRef.current);
+    };
+  }, [error, status, activeGlow]);
 
   const adjustHeight = useCallback(() => {
     if (textareaRef.current) {
@@ -307,6 +342,7 @@ function PureMultimodalInput({
 
       <PromptInput
         className="rounded-xl border border-border bg-background p-3 shadow-xs transition-all duration-200 focus-within:border-border hover:border-muted-foreground/50"
+        glow={activeGlow}
         onSubmit={(event) => {
           event.preventDefault();
           if (!input.trim() && attachments.length === 0) {

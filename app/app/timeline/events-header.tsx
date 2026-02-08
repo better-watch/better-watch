@@ -2,7 +2,6 @@
 
 import Link from "next/link";
 import { SidebarToggle } from "@/components/sidebar-toggle";
-import { ThemeToggle } from "@/components/theme-toggle";
 import { Button } from "@/components/ui/button";
 import { MessageIcon } from "@/components/icons";
 
@@ -23,7 +22,6 @@ export function EventsHeader() {
           <span className="md:sr-only">Chat</span>
         </Link>
       </Button>
-      <ThemeToggle />
     </header>
   );
 }

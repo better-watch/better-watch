@@ -1,7 +1,6 @@
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { Suspense } from "react";
-
 import { auth } from "@/app/(auth)/auth";
 import { Chat } from "@/components/chat";
 import { DataStreamHandler } from "@/components/data-stream-handler";
@@ -20,7 +19,7 @@ async function NewChatPage() {
   const session = await auth();
 
   if (!session) {
-    redirect("/login");
+    redirect("/api/auth/guest");
   }
 
   const cookieStore = await cookies();

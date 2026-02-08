@@ -19,12 +19,17 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import { cn } from "@/lib/utils";
 
-export type PromptInputProps = HTMLAttributes<HTMLFormElement>;
+export type PromptInputProps = HTMLAttributes<HTMLFormElement> & {
+  glow?: "error" | "fixing" | "success" | null;
+};
 
-export const PromptInput = ({ className, ...props }: PromptInputProps) => (
+export const PromptInput = ({ className, glow, ...props }: PromptInputProps) => (
   <form
     className={cn(
-      "w-full overflow-hidden rounded-xl border bg-background shadow-xs",
+      "w-full overflow-hidden rounded-xl border bg-background shadow-xs transition-all duration-500",
+      glow === "error" && "border-destructive! shadow-[0_0_15px_rgba(239,68,68,0.3)]",
+      glow === "fixing" && "border-yellow-500/80 shadow-[0_0_15px_rgba(234,179,8,0.3)]",
+      glow === "success" && "border-green-500/80 shadow-[0_0_15px_rgba(34,197,94,0.3)]",
       className
     )}
     {...props}

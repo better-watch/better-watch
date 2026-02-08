@@ -19,6 +19,7 @@ import type {
   Severity,
   ArtifactType,
 } from '@/lib/sre-events';
+import { ThemeToggle } from '@/components/theme-toggle';
 
 // Artifact components
 import { SparklineChart, AreaChart, BarChart } from './artifacts/metric-charts';
@@ -724,8 +725,9 @@ export function TimeMachine({ events }: TimeMachineProps) {
           <div className="absolute -top-6 right-0 text-[11px] text-neutral-400">
             {new Date(oldestTime).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
           </div>
-          <div className="absolute -bottom-6 right-0 text-[11px] text-blue-500 font-medium">
+          <div className="absolute -bottom-6 right-0 flex items-center gap-2 text-[11px] text-blue-500 font-medium">
             Now
+            <ThemeToggle />
           </div>
         </div>
       </motion.div>
