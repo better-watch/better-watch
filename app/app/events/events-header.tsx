@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { ThemeToggle } from "@/components/theme-toggle";
 import { Button } from "@/components/ui/button";
 import { MessageIcon } from "@/components/icons";
 
@@ -17,6 +18,7 @@ export function EventsNewHeader() {
           <span className="md:sr-only">Chat</span>
         </Link>
       </Button>
+      <ThemeToggle />
     </header>
   );
 }

@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { memo } from "react";
 import { useWindowSize } from "usehooks-ts";
 import { SidebarToggle } from "@/components/sidebar-toggle";
+import { ThemeToggle } from "@/components/theme-toggle";
 import { Button } from "@/components/ui/button";
 import { ClockIcon, PlusIcon } from "./icons";
 import { useSidebar } from "./ui/sidebar";
@@ -50,6 +51,7 @@ function PureChatHeader({
         </Link>
       </Button>
 
+      <ThemeToggle />
     </header>
   );
 }
