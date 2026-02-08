@@ -376,6 +376,68 @@ function BeforeAfterSection() {
   );
 }
 
+function InstallSection() {
+  return (
+    <section className="border-t border-border-color/60 bg-warm-cream/50 px-6 py-32 dark:bg-warm-cream/20">
+      <div className="mx-auto max-w-3xl">
+        <ScrollReveal>
+          <p className="text-sm font-bold uppercase tracking-[0.2em] text-chart-1">
+            Get started
+          </p>
+          <h2 className="mt-4 font-alliance text-3xl font-bold tracking-tight text-heading sm:text-4xl">
+            One package. One line. Done.
+          </h2>
+          <p className="mt-6 max-w-2xl text-lg leading-relaxed text-subtitle">
+            Add the SDK to your project and initialize it — just like dd-trace.
+            The agent handles the rest.
+          </p>
+        </ScrollReveal>
+        <ScrollReveal delay={0.15}>
+          <div className="mt-12 space-y-4">
+            <div className="overflow-hidden rounded-lg border border-border-color/60 bg-zinc-950 shadow-lg">
+              <div className="flex items-center gap-2 border-b border-white/10 px-4 py-2.5">
+                <span className="text-xs font-mono font-bold uppercase tracking-wider text-zinc-500">
+                  Terminal
+                </span>
+              </div>
+              <pre className="px-4 py-4 text-sm font-mono leading-relaxed overflow-x-auto">
+                <code>
+                  <span className="text-zinc-500 select-none">$ </span>
+                  <span className="text-green-400">bun add</span>
+                  <span className="text-zinc-100"> @better-watch/sdk</span>
+                </code>
+              </pre>
+            </div>
+            <div className="overflow-hidden rounded-lg border border-border-color/60 bg-zinc-950 shadow-lg">
+              <div className="flex items-center justify-between border-b border-white/10 px-4 py-2.5">
+                <span className="text-xs font-mono font-bold uppercase tracking-wider text-zinc-500">
+                  instrumentation.ts
+                </span>
+              </div>
+              <pre className="px-4 py-4 text-sm font-mono leading-relaxed overflow-x-auto">
+                <code>
+                  <span className="text-violet-400">import</span>
+                  <span className="text-zinc-100">{" { init } "}</span>
+                  <span className="text-violet-400">from</span>
+                  <span className="text-amber-300">{" '@better-watch/sdk'"}</span>
+                  <br />
+                  <br />
+                  <span className="text-blue-400">init</span>
+                  <span className="text-zinc-100">{"()"}</span>
+                </code>
+              </pre>
+            </div>
+          </div>
+          <p className="mt-6 text-sm text-faded">
+            No code changes to your application. No build plugins required.
+            Works with Node.js, Bun, Next.js, Remix, Hono, and more.
+          </p>
+        </ScrollReveal>
+      </div>
+    </section>
+  );
+}
+
 function CTASection() {
   return (
     <section className="border-t border-border-color/60 bg-warm-cream/50 px-6 py-32 dark:bg-warm-cream/20">
@@ -432,6 +494,8 @@ export function LandingPage() {
         <KeyInsightSection />
         <SectionDivider />
         <BeforeAfterSection />
+        <SectionDivider />
+        <InstallSection />
         <SectionDivider />
         <CTASection />
         <Footer />
