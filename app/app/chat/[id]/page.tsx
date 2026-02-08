@@ -2,7 +2,7 @@ import { cookies } from "next/headers";
 import { notFound, redirect } from "next/navigation";
 import { Suspense } from "react";
 
-import { auth } from "@/app/(auth)/auth";
+import { authSession } from "@/app/(auth)/auth";
 import { Chat } from "@/components/chat";
 import { DataStreamHandler } from "@/components/data-stream-handler";
 import { DEFAULT_CHAT_MODEL } from "@/lib/ai/models";
@@ -25,7 +25,7 @@ async function ChatPage({ params }: { params: Promise<{ id: string }> }) {
     redirect("/chat");
   }
 
-  const session = await auth();
+  const session = await authSession();
 
   if (!session) {
     redirect("/login");

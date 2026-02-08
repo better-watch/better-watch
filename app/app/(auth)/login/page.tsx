@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useSession } from "next-auth/react";
+import { authClient } from "@/lib/auth-client";
 import { useActionState, useEffect, useState } from "react";
 
 import { AuthForm } from "@/components/auth-form";
@@ -23,7 +23,7 @@ export default function Page() {
     }
   );
 
-  const { update: updateSession } = useSession();
+  const { refetch } = authClient.useSession();
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: router and updateSession are stable refs
   useEffect(() => {
@@ -39,10 +39,10 @@ export default function Page() {
       });
     } else if (state.status === "success") {
       setIsSuccessful(true);
-      updateSession();
+      refetch();
       router.refresh();
     }
-  }, [state.status]);
+  }, [state.status, refetch]);
 
   const handleSubmit = (formData: FormData) => {
     setEmail(formData.get("email") as string);

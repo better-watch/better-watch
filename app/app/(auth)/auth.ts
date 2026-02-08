@@ -1,94 +1,56 @@
 import { compare } from "bcrypt-ts";
-import NextAuth, { type DefaultSession } from "next-auth";
-import type { DefaultJWT } from "next-auth/jwt";
-import Credentials from "next-auth/providers/credentials";
-import { DUMMY_PASSWORD } from "@/lib/constants";
-import { createGuestUser, getUser } from "@/lib/db/queries";
-import { authConfig } from "./auth.config";
+import { betterAuth } from "better-auth";
+import { drizzleAdapter } from "better-auth/adapters/drizzle";
+import { nextCookies } from "better-auth/next-js";
+import { headers } from "next/headers";
+import { db, schema } from "@/lib/db";
+import { generateHashedPassword } from "@/lib/db/utils";
 
 export type UserType = "guest" | "regular";
 
-declare module "next-auth" {
-  interface Session extends DefaultSession {
-    user: {
-      id: string;
-      type: UserType;
-    } & DefaultSession["user"];
-  }
-
-  interface User {
-    id?: string;
-    email?: string | null;
-    type: UserType;
-  }
-}
-
-declare module "next-auth/jwt" {
-  interface JWT extends DefaultJWT {
+export interface AuthSession {
+  user: {
     id: string;
-    type: UserType;
-  }
+    email?: string | null;
+    name?: string | null;
+    image?: string | null;
+    type?: UserType;
+  };
 }
 
-export const {
-  handlers: { GET, POST },
-  auth,
-  signIn,
-  signOut,
-} = NextAuth({
-  ...authConfig,
-  providers: [
-    Credentials({
-      credentials: {},
-      async authorize({ email, password }: any) {
-        const users = await getUser(email);
-
-        if (users.length === 0) {
-          await compare(password, DUMMY_PASSWORD);
-          return null;
-        }
-
-        const [user] = users;
-
-        if (!user.password) {
-          await compare(password, DUMMY_PASSWORD);
-          return null;
-        }
-
-        const passwordsMatch = await compare(password, user.password);
-
-        if (!passwordsMatch) {
-          return null;
-        }
-
-        return { ...user, type: "regular" };
-      },
-    }),
-    Credentials({
-      id: "guest",
-      credentials: {},
-      async authorize() {
-        const [guestUser] = await createGuestUser();
-        return { ...guestUser, type: "guest" };
-      },
-    }),
-  ],
-  callbacks: {
-    jwt({ token, user }) {
-      if (user) {
-        token.id = user.id as string;
-        token.type = user.type;
-      }
-
-      return token;
+export const auth = betterAuth({
+  database: drizzleAdapter(db, {
+    provider: "pg",
+    schema: {
+      ...schema,
+      user: schema.user,
+      account: schema.account,
+      session: schema.session,
+      verification: schema.verification,
     },
-    session({ session, token }) {
-      if (session.user) {
-        session.user.id = token.id;
-        session.user.type = token.type;
-      }
-
-      return session;
+  }),
+  emailAndPassword: {
+    enabled: true,
+    password: {
+      hash: (password: string) => Promise.resolve(generateHashedPassword(password)),
+      verify: (data: { password: string; hash: string }) =>
+        compare(data.password, data.hash),
     },
   },
+  user: {
+    additionalFields: {
+      type: {
+        type: ["guest", "regular"],
+        required: true,
+        defaultValue: "regular",
+        input: true,
+      },
+    },
+  },
+  basePath: "/api/auth",
+  plugins: [nextCookies()],
 });
+
+export async function authSession() {
+  return auth.api.getSession({ headers: await headers() });
+}

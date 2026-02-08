@@ -2,9 +2,9 @@
 
 import { z } from "zod";
 
-import { createUser, getUser } from "@/lib/db/queries";
-
-import { signIn } from "./auth";
+import { auth } from "./auth";
+import { getUser } from "@/lib/db/queries";
+import { headers } from "next/headers";
 
 const authFormSchema = z.object({
   email: z.string().email(),
@@ -25,10 +25,12 @@ export const login = async (
       password: formData.get("password"),
     });
 
-    await signIn("credentials", {
-      email: validatedData.email,
-      password: validatedData.password,
-      redirect: false,
+    await auth.api.signInEmail({
+      body: {
+        email: validatedData.email,
+        password: validatedData.password,
+      },
+      headers: await headers(),
     });
 
     return { status: "success" };
@@ -61,16 +63,20 @@ export const register = async (
       password: formData.get("password"),
     });
 
-    const [user] = await getUser(validatedData.email);
+    const [existingUser] = await getUser(validatedData.email);
 
-    if (user) {
+    if (existingUser) {
       return { status: "user_exists" } as RegisterActionState;
     }
-    await createUser(validatedData.email, validatedData.password);
-    await signIn("credentials", {
-      email: validatedData.email,
-      password: validatedData.password,
-      redirect: false,
+
+    await auth.api.signUpEmail({
+      body: {
+        name: validatedData.email.split("@")[0],
+        email: validatedData.email,
+        password: validatedData.password,
+        type: "regular",
+      },
+      headers: await headers(),
     });
 
     return { status: "success" };

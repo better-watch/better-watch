@@ -12,14 +12,14 @@ import {
   lt,
   type SQL,
 } from "drizzle-orm";
-import { drizzle } from "drizzle-orm/postgres-js";
-import postgres from "postgres";
 import type { ArtifactKind } from "@/components/artifact";
 import type { VisibilityType } from "@/components/visibility-selector";
 import { ChatSDKError } from "../errors";
 import { generateUUID } from "../utils";
+import { db } from "./index";
 import {
   type Chat,
+  account,
   chat,
   type DBMessage,
   document,
@@ -33,14 +33,6 @@ import {
 } from "./schema";
 import { generateHashedPassword } from "./utils";
 
-// Optionally, if not using email/pass login, you can
-// use the Drizzle adapter for Auth.js / NextAuth
-// https://authjs.dev/reference/adapter/drizzle
-
-// biome-ignore lint: Forbidden non-null assertion.
-const client = postgres(process.env.POSTGRES_URL!);
-const db = drizzle(client);
-
 export async function getUser(email: string): Promise<User[]> {
   try {
     return await db.select().from(user).where(eq(user.email, email));
@@ -52,25 +44,44 @@ export async function getUser(email: string): Promise<User[]> {
   }
 }
 
-export async function createUser(email: string, password: string) {
-  const hashedPassword = generateHashedPassword(password);
-
-  try {
-    return await db.insert(user).values({ email, password: hashedPassword });
-  } catch (_error) {
-    throw new ChatSDKError("bad_request:database", "Failed to create user");
-  }
-}
-
-export async function createGuestUser() {
+export async function createGuestUserForAuth(): Promise<{
+  email: string;
+  password: string;
+  id: string;
+}> {
   const email = `guest-${Date.now()}`;
-  const password = generateHashedPassword(generateUUID());
+  const plainPassword = generateUUID();
+  const hashedPassword = generateHashedPassword(plainPassword);
 
   try {
-    return await db.insert(user).values({ email, password }).returning({
-      id: user.id,
-      email: user.email,
+    const [newUser] = await db
+      .insert(user)
+      .values({
+        email,
+        name: "Guest",
+        type: "guest",
+      })
+      .returning({ id: user.id, email: user.email });
+
+    if (!newUser) {
+      throw new ChatSDKError(
+        "bad_request:database",
+        "Failed to create guest user"
+      );
+    }
+
+    await db.insert(account).values({
+      userId: newUser.id,
+      accountId: newUser.id,
+      providerId: "credential",
+      password: hashedPassword,
     });
+
+    return {
+      email: newUser.email,
+      password: plainPassword,
+      id: newUser.id,
+    };
   } catch (_error) {
     throw new ChatSDKError(
       "bad_request:database",

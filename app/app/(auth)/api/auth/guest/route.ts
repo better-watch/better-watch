@@ -1,21 +1,29 @@
 import { NextResponse } from "next/server";
-import { getToken } from "next-auth/jwt";
-import { signIn } from "@/app/(auth)/auth";
-import { isDevelopmentEnvironment } from "@/lib/constants";
+import { auth } from "@/app/(auth)/auth";
+import { createGuestUserForAuth } from "@/lib/db/queries";
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
   const redirectUrl = searchParams.get("redirectUrl") || "/chat";
 
-  const token = await getToken({
-    req: request,
-    secret: process.env.AUTH_SECRET,
-    secureCookie: !isDevelopmentEnvironment,
+  const session = await auth.api.getSession({
+    headers: request.headers,
   });
 
-  if (token) {
+  if (session) {
     return NextResponse.redirect(new URL("/chat", request.url));
   }
 
-  return signIn("guest", { redirectTo: redirectUrl });
+  const { email, password } = await createGuestUserForAuth();
+
+  const result = await auth.api.signInEmail({
+    body: { email, password, callbackURL: redirectUrl },
+    headers: request.headers,
+  });
+
+  if (result.redirect) {
+    return NextResponse.redirect(result.redirect);
+  }
+
+  return NextResponse.redirect(new URL(redirectUrl, request.url));
 }

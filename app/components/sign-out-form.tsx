@@ -1,6 +1,7 @@
 import Form from "next/form";
 
-import { signOut } from "@/app/(auth)/auth";
+import { auth } from "@/app/(auth)/auth";
+import { headers } from "next/headers";
 
 export const SignOutForm = () => {
   return (
@@ -8,9 +9,7 @@ export const SignOutForm = () => {
       action={async () => {
         "use server";
 
-        await signOut({
-          redirectTo: "/",
-        });
+        await auth.api.signOut({ headers: await headers() });
       }}
       className="w-full"
     >
