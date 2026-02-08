@@ -9,6 +9,7 @@ import { ThemeToggle } from "@/components/theme-toggle";
 import { Button } from "@/components/ui/button";
 import { ClockIcon, PlusIcon } from "./icons";
 import { useSidebar } from "./ui/sidebar";
+import { HistoryIcon } from "lucide-react";
 
 function PureChatHeader({
   chatId,
@@ -40,17 +41,30 @@ function PureChatHeader({
         </Button>
       )}
 
-      <Button
-        asChild
-        className="order-3 h-8 px-2 md:ml-auto md:h-fit md:px-2"
-        variant="outline"
-      >
-        <Link href="/events">
-          <ClockIcon size={16} />
-          <span className="md:sr-only">Audit Log</span>
-        </Link>
-      </Button>
 
+      <div className="flex items-center gap-2">
+        <Button
+          asChild
+          className="order-3 h-8 px-2 md:ml-auto md:h-fit md:px-2"
+          variant="outline"
+        >
+          <Link href="/events">
+            <HistoryIcon size={16} />
+            <span className="md:sr-only">Audit Log</span>
+          </Link>
+        </Button>
+
+        <Button
+          asChild
+          className="order-3 h-8 px-2 md:ml-auto md:h-fit md:px-2"
+          variant="outline"
+        >
+          <Link href="/timeline">
+            <ClockIcon size={16} />
+            <span className="md:sr-only">Timeline</span>
+          </Link>
+        </Button>
+      </div>
       <ThemeToggle />
     </header>
   );
